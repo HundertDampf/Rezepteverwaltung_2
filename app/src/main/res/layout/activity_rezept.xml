@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ch.bbbaden.m335.rezepteverwaltung.activities.RezeptActivity">
+    tools:context="ch.bbbaden.ims.rezepteverwaltung.activities.RezeptActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
