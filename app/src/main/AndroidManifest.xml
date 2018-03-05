@@ -48,7 +48,9 @@
 
         <activity android:name=".activities.BarcodeCatcherActivity"/>
 
-
+        <activity
+            android:name=".services.barcode.BarcodeCaptureActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 
 </manifest>
