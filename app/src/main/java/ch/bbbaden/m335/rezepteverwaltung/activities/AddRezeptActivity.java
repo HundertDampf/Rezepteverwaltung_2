@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
-import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
+import ch.bbbaden.m335.rezepteverwaltung.tools.*;
 
 public class AddRezeptActivity extends AppCompatActivity {
 

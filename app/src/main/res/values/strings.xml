@@ -23,6 +23,9 @@
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
     <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
 
+    <string name="radio_local">Rezept nur lokal speichern</string>
+    <string name="radio_public">Rezept öffentlich speichern</string>
+    <string name="radio_private">Rezept privat in der Datenbank speichern</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"

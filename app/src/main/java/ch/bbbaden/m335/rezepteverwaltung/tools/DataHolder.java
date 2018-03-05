@@ -20,6 +20,10 @@ public class DataHolder {
     @Getter
     private List<Rezept> rezepteListe;
 
+    @Getter
+    @Setter
+    private int saveId;
+
 
     private static final DataHolder holder = new DataHolder();
 
