@@ -6,5 +6,58 @@
     android:layout_height="match_parent"
     tools:context="ch.bbbaden.m335.rezepteverwaltung.activities.MenuActivity">
 
+    <Button
+        android:id="@+id/btnMenuAlleRezepte"
+        android:layout_width="233dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="68dp"
+        android:text="Alle Rezepte"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/btnMenuGoToSuche"
+        android:layout_width="233dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="28dp"
+        android:text="Suche Nach Rezepten"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMenuAlleRezepte" />
+
+    <Button
+        android:id="@+id/btnMenuNeuesRezept"
+        android:layout_width="233dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="28dp"
+        android:text="Neues Rezept hinzufügen"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMenuGoToSuche" />
+
+    <Button
+        android:id="@+id/btnMenuGluck"
+        android:layout_width="233dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="28dp"
+        android:text="Auf Gut Glück"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMenuNeuesRezept" />
+
+    <Button
+        android:id="@+id/btnMenuBackup"
+        android:layout_width="233dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="28dp"
+        android:text="Back Up"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMenuGluck" />
 </android.support.constraint.ConstraintLayout>

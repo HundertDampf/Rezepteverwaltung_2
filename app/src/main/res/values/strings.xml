@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name">Rezepteverwaltung</string>
+    <string name="app_name">Rezepteverwaltung V0.3</string>
     <string name="name">Name</string>
-    <string name="auforderung1">Bitte geben Sie ihren Namen und Klasse einen</string>
+    <string name="auforderung1">Bitte loggen sie sich ein</string>
     <string name="passwort">Passwort</string>
     <string name="title_activity_rezept">RezeptActivity</string>
     <!-- Strings related to MainActivity-->
+
     <string name="scan_barcode_button">Scan barcode</string>
     <string name="no_barcode_captured">No barcode captured</string>
     <string name="barcode_error_format">"Error reading barcode: %1$s"</string>
