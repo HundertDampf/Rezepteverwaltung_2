@@ -17,6 +17,10 @@ public class Rezept {
     @Setter
     private String rezeptName;
 
+    @Getter
+    @Setter
+    private String rezeptAuthor;
+
 //    @Getter
 //    @Setter
 //    private List<String>[] rezeptZutaten;
@@ -36,6 +40,7 @@ public class Rezept {
         this.rezeptId = rezeptId;
         this.rezeptName = rezeptName;
         this.rezeptZubereitung = rezeptZubereitung;
+        //TODO Zutaten
         this.rezeptDauer = rezeptDauer;
     }
 }
