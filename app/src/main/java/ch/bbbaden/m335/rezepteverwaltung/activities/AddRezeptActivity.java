@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
-import ch.bbbaden.m335.rezepteverwaltung.tools.*;
+import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 
 public class AddRezeptActivity extends AppCompatActivity {
 
@@ -47,7 +47,7 @@ public class AddRezeptActivity extends AppCompatActivity {
 //                    }}
 //                });
 //            }
-            if (i == 2) {
+            if (i == 3) {
                 editTexts[i].setOnKeyListener(new View.OnKeyListener() {
 
                     @Override
@@ -89,7 +89,8 @@ public class AddRezeptActivity extends AppCompatActivity {
         addRezept.setRezeptName(editTexts[0].getText().toString());
         addRezept.setRezeptDauer(editTexts[3].getText().toString());
         addRezept.setRezeptZubereitung(editTexts[1].getText().toString());
-
+        isOnline();
+        addRezept.setRezeptId(generateId());
         finish();
         // addRezept(AppDatabase.getAppDatabase(MainActivity.context), mDatabase, addRezept);
         DataHolder.getInstance().setRezept(addRezept);
@@ -100,4 +101,33 @@ public class AddRezeptActivity extends AppCompatActivity {
     public void goToNewActivity(Class goToClass) {
         startActivity(new Intent(getApplicationContext(), goToClass));
     }
+
+    public void isOnline() {
+        if (DataHolder.getInstance().getSaveId() == 1) {
+            addRezept.setRezeptOnline(false);
+        } else if (DataHolder.getInstance().getSaveId() == 2) {
+            addRezept.setRezeptOnline(true);
+            addRezept.setRezeptPublic(false);
+        } else if (DataHolder.getInstance().getSaveId() == 3) {
+            addRezept.setRezeptOnline(true);
+            addRezept.setRezeptPublic(true);
+        }
+    }
+
+    public String generateId() {
+        String id;
+        //TODO userId & RezeptId
+        if (addRezept.isRezeptOnline()) {
+            if (addRezept.isRezeptPublic()) {
+                id = "10";
+            } else {
+                id = "20";
+            }
+        } else {
+            id = "30";
+        }
+
+        return id;
+    }
+
 }

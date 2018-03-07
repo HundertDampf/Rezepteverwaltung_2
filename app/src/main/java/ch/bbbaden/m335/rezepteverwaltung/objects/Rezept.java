@@ -11,7 +11,7 @@ public class Rezept {
     @Getter
     @Setter
 //    @PrimaryKey
-    private int rezeptId;
+    private String rezeptId;
 
     @Getter
     @Setter
@@ -33,15 +33,25 @@ public class Rezept {
     @Setter
     private String rezeptDauer;
 
+    @Getter
+    @Setter
+    private boolean rezeptOnline;
+
+    @Getter
+    @Setter
+    private boolean rezeptPublic;
+
     public Rezept() {
     }
 
-    public Rezept(int rezeptId, String rezeptName, String rezeptZubereitung, String rezeptDauer) {
+    public Rezept(String rezeptId, String rezeptName, String rezeptZubereitung, String rezeptDauer, boolean rezeptStatus, boolean rezeptDbMethod) {
         this.rezeptId = rezeptId;
         this.rezeptName = rezeptName;
         this.rezeptZubereitung = rezeptZubereitung;
         //TODO Zutaten
         this.rezeptDauer = rezeptDauer;
+        this.rezeptOnline = rezeptStatus;
+        this.rezeptPublic = rezeptDbMethod;
     }
 }
 
