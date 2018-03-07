@@ -8,11 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.util.List;
-
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
-import ch.bbbaden.m335.rezepteverwaltung.services.AppDatabase;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 
@@ -21,6 +18,8 @@ public class AddRezeptActivity extends AppCompatActivity {
     Button btnAdd;
     EditText[] editTexts;
     Rezept addRezept;
+
+    private boolean rezeptAdded = false;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -51,20 +50,6 @@ public class AddRezeptActivity extends AppCompatActivity {
 //                    }}
 //                });
 //            }
-            if (i == 3) {
-                editTexts[i].setOnKeyListener(new View.OnKeyListener() {
-
-                    @Override
-                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                        if ((keyCode == KeyEvent.KEYCODE_ENTER)) {
-                            saveRezept();
-                            return true;
-                        } else
-                            return false;
-                    }
-                });
-            }
             editTexts[i].setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -78,26 +63,49 @@ public class AddRezeptActivity extends AppCompatActivity {
                     return;
                 }
             });
-            btnAdd = findViewById(R.id.btnAdd);
+
         }
+        editTexts[3].setOnKeyListener(new View.OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if ((keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    System.out.println("On keylistener triggered'???????????????????????????????????????????????????????'");
+                    if (!rezeptAdded) {
+                        saveRezept();
+                    }
+                    return true;
+                } else
+                    return false;
+            }
+        });
+
+        btnAdd = findViewById(R.id.btnAdd);
+
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("Butoon------------------------------------------------------");
                 saveRezept();
             }
         });
     }
 
     public void saveRezept() {
+        System.out.println("SafeRezept methode started");
         addRezept = new Rezept();
         addRezept.setRezeptName(editTexts[0].getText().toString());
         addRezept.setRezeptDauer(editTexts[3].getText().toString());
         addRezept.setRezeptZubereitung(editTexts[1].getText().toString());
         isOnline();
         addRezept.setRezeptId(generateId());
-        finish();
+//        finish();
+
+        System.out.println("SaveRezept() " + addRezept.getRezeptId());
         DatabaseConector.addRezept(addRezept);
         DataHolder.getInstance().setRezept(addRezept);
+        rezeptAdded = true;   //TODO check if okay
         goToNewActivity(RezeptActivity.class);
     }
 
@@ -131,7 +139,6 @@ public class AddRezeptActivity extends AppCompatActivity {
         }
         //TODO userId
         id += "" + DatabaseConector.getRezepte().size();
-
 
 
         return id;

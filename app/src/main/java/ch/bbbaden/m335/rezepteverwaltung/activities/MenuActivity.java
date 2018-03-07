@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.services.AppDatabase;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.*;
@@ -59,11 +60,30 @@ public class MenuActivity extends AppCompatActivity {
                 goToNewActivity(RezeptActivity.class);
             }
         });
-    }
 
+        btnBackup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fillDB();
+                //TODO remove fillDB()
+            }
+        });
+    }
 
 
     public void goToNewActivity(Class goToClass) {
         startActivity(new Intent(getApplicationContext(), goToClass));
+    }
+
+    public void fillDB() {
+        DatabaseConector.deleteRezepte();
+        for (int i = 0; i < 15; i++) {
+            Rezept fillRezept = new Rezept();
+            fillRezept.setRezeptId("3041701" + i);
+            fillRezept.setRezeptName("Rezept" + i);
+            fillRezept.setRezeptZubereitung("Zubereitung " + i + " " + getResources().getString(R.string.large_text));
+            DatabaseConector.addRezept(fillRezept);
+        }
+
     }
 }

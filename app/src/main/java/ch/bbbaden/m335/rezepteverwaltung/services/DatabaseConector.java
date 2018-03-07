@@ -14,6 +14,7 @@ public class DatabaseConector {
     public static Rezept addRezept(Rezept rezept) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
         db.rezeptDAO().insertAll(rezept);
+        System.out.println("Rezept added, DBConector");
         return rezept;
     }
 
@@ -22,5 +23,10 @@ public class DatabaseConector {
         List<Rezept> rezepts = db.rezeptDAO().getAll();
         System.out.println("RezepteListe Grösse: " + rezepts.size());
         return rezepts;
+    }
+
+    public static void deleteRezepte() {
+        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
+        db.rezeptDAO().deleteAll();
     }
 }

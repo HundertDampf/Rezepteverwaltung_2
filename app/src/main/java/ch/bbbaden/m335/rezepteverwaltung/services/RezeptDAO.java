@@ -29,4 +29,7 @@ public interface RezeptDAO {
 
     @Delete
     void delete(Rezept rezept);
+
+    @Query("DELETE FROM rezepte")
+    void deleteAll();
 }
