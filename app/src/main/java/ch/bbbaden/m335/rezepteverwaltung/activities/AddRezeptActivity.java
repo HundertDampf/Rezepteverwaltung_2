@@ -8,8 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.List;
+
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.services.AppDatabase;
+import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 
 public class AddRezeptActivity extends AppCompatActivity {
@@ -92,7 +96,7 @@ public class AddRezeptActivity extends AppCompatActivity {
         isOnline();
         addRezept.setRezeptId(generateId());
         finish();
-        // addRezept(AppDatabase.getAppDatabase(MainActivity.context), mDatabase, addRezept);
+        DatabaseConector.addRezept(addRezept);
         DataHolder.getInstance().setRezept(addRezept);
         goToNewActivity(RezeptActivity.class);
     }
@@ -116,7 +120,6 @@ public class AddRezeptActivity extends AppCompatActivity {
 
     public String generateId() {
         String id;
-        //TODO userId & RezeptId
         if (addRezept.isRezeptOnline()) {
             if (addRezept.isRezeptPublic()) {
                 id = "10";
@@ -126,6 +129,10 @@ public class AddRezeptActivity extends AppCompatActivity {
         } else {
             id = "30";
         }
+        //TODO userId
+        id += "" + DatabaseConector.getRezepte().size();
+
+
 
         return id;
     }

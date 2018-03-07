@@ -1,16 +1,21 @@
 package ch.bbbaden.m335.rezepteverwaltung.objects;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * Created by Noah on 02.03.2018.
  */
-
+@Entity(tableName = "rezepte")
 public class Rezept {
     @Getter
     @Setter
-//    @PrimaryKey
+    @PrimaryKey
+    @NonNull
     private String rezeptId;
 
     @Getter

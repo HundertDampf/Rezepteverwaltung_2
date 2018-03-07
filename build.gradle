@@ -25,3 +25,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ext {
+    buildToolsVersion = "26.1.0"
+    supportLibVersion = "26.1.0"
+    archRoomVersion = "1.0.0-alpha1"
+}

@@ -42,7 +42,7 @@ public class RezeptActivity extends AppCompatActivity {
         viewDauer.setText(rezeptToShow.getRezeptDauer());
         viewZubereitung.setText(rezeptToShow.getRezeptZubereitung());
 
-        new Toaster(getApplicationContext(),DataHolder.getInstance().getSaveId()+" saveId",1);
+        new Toaster(getApplicationContext(), rezeptToShow.getRezeptId() + " rezeptID", 1);
 
     }
 }

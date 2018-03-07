@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.services.AppDatabase;
+import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.*;
 
 public class MenuActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class MenuActivity extends AppCompatActivity {
         btnAlleRezepte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  DataHolder.getInstance().setRezepteListe(AppDatabase.getAppDatabase(MainActivity.context).rezeptDAO().getAll());
+                DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepte());
                 goToNewActivity(RezepteListActivity.class);
             }
         });

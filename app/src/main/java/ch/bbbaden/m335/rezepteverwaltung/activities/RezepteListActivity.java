@@ -30,8 +30,8 @@ public class RezepteListActivity extends AppCompatActivity {
             if (rezepte.size() == 1) {
                 DataHolder.getInstance().setRezept(rezepte.get(0));
                 startActivity(new Intent(getApplicationContext(), RezeptActivity.class));
-            } else if (rezepte.size() > 1) {
 
+            } else if (rezepte.size() > 1) {
                 String[] listItems = new String[rezepte.size()];
 
                 for (int i = 0; i < rezepte.size(); i++) {
@@ -41,6 +41,7 @@ public class RezepteListActivity extends AppCompatActivity {
 
                 ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
                 listView.setAdapter(adapter);
+
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                     @Override
@@ -57,9 +58,4 @@ public class RezepteListActivity extends AppCompatActivity {
         }
     }
 
-//    private static List<Rezept> getRezepte(final AppDatabase db) {
-//        List<Rezept> rezepts = db.rezeptDAO().getAll();
-//        System.out.println("RezepteListe Grösse: " + rezepts.size());
-//        return rezepts;
-//    }
 }
