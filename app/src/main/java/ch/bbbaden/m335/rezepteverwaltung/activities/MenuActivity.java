@@ -2,9 +2,13 @@ package ch.bbbaden.m335.rezepteverwaltung.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
@@ -13,12 +17,14 @@ import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 
 public class MenuActivity extends AppCompatActivity {
+    FirebaseAuth auth = FirebaseAuth.getInstance();
 
     Button btnAlleRezepte;
     Button btnSuche;
     Button btnGluck;
     Button btnNeuesRezept;
     Button btnBackup;
+    Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +36,7 @@ public class MenuActivity extends AppCompatActivity {
         btnGluck = findViewById(R.id.btnMenuGluck);
         btnNeuesRezept = findViewById(R.id.btnMenuNeuesRezept);
         btnBackup = findViewById(R.id.btnMenuBackup);
+        btnLogout = findViewById(R.id.btnMenuLogout);
 
         btnAlleRezepte.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +73,27 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 fillDB();
                 //TODO remove fillDB()
+            }
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+
+// this listener will be called when there is change in firebase user session
+                FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+                    @Override
+                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user == null) {
+                            // user auth state is changed - user is null
+                            // launch login activity
+                            startActivity(new Intent(MenuActivity.this, MainActivity.class));
+                            finish();
+                        }
+                    }
+                };
             }
         });
     }

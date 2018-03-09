@@ -11,14 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.Arrays;
-import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
@@ -32,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     EditText editName;
     EditText editPassword;
     Button btnEnter;
+    Button btnSignUp;
     ProgressBar progressBar;
 
     private FirebaseAuth auth;
@@ -47,32 +44,39 @@ public class MainActivity extends AppCompatActivity {
         editName = findViewById(R.id.editMainName);
         editPassword = findViewById(R.id.editMainPasswort);
         progressBar = findViewById(R.id.progressBar);
+        btnSignUp = findViewById(R.id.btnMainSignUp);
 
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(this, MenuActivity.class));
             finish();
         }
 
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, SignupActivity.class));
+            }
+        });
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = editName.getText().toString();
-                final String password = editPassword.getText().toString();
+                String inputEmail = editName.getText().toString();
+                final String inputPassword = editPassword.getText().toString();
 
-                if (TextUtils.isEmpty(email)) {
-                    new Toaster(getApplicationContext(), "Enter email address!", 1);
+                if (TextUtils.isEmpty(inputEmail)) {
+                    new Toaster(getApplicationContext(), "Enter Email address!", 1);
                     return;
                 }
 
-                if (TextUtils.isEmpty(password)) {
-                    new Toaster(getApplicationContext(), "Enter password!", 1);
+                if (TextUtils.isEmpty(inputPassword)) {
+                    new Toaster(getApplicationContext(), "Enter Password!", 1);
                     return;
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
 
                 //authenticate user
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                auth.signInWithEmailAndPassword(inputEmail, inputPassword).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -81,19 +85,20 @@ public class MainActivity extends AppCompatActivity {
                         //progressBar.setVisibility(View.GONE);
                         if (!task.isSuccessful()) {
                             // there was an error
-                            if (password.length() < 6) {
+                            if (inputPassword.length() < 6) {
                                 editPassword.setError("Passwort zu kurz");
                             } else {
-                                new Toaster(getApplicationContext(), "Lgin Fehler", 1);
+                                new Toaster(getApplicationContext(), "Login Fehler", 1);
                             }
                         } else {
-                            Intent intent = new Intent(context, MenuActivity.class);
-                            startActivity(intent);
+                            startActivity(new Intent(context, MenuActivity.class));
                             finish();
                         }
                     }
                 });
             }
         });
+
+
     }
 }
