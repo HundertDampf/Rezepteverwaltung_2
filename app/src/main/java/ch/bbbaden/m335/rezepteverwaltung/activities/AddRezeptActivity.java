@@ -11,6 +11,7 @@ import android.widget.EditText;
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
+import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 
 public class AddRezeptActivity extends AppCompatActivity {
@@ -99,11 +100,17 @@ public class AddRezeptActivity extends AppCompatActivity {
         addRezept.setRezeptDauer(editTexts[3].getText().toString());
         addRezept.setRezeptZubereitung(editTexts[1].getText().toString());
         isOnline();
-        addRezept.setRezeptId(generateId());
-//        finish();
+        addRezept.setRezeptAuthor("42"); //TODO author
+        addRezept.setRezeptId(DatabaseConector.generateId(addRezept));
 
         System.out.println("SaveRezept() " + addRezept.getRezeptId());
-        DatabaseConector.addRezept(addRezept);
+
+        if (addRezept.isRezeptOnline()) {
+            new FirebaseConector().addRezeptToFirebase(addRezept);
+            DatabaseConector.addRezept(addRezept);
+        } else {
+            DatabaseConector.addRezept(addRezept);
+        }
         DataHolder.getInstance().setRezept(addRezept);
         rezeptAdded = true;   //TODO check if okay
         goToNewActivity(RezeptActivity.class);
@@ -126,22 +133,5 @@ public class AddRezeptActivity extends AppCompatActivity {
         }
     }
 
-    public String generateId() {
-        String id;
-        if (addRezept.isRezeptOnline()) {
-            if (addRezept.isRezeptPublic()) {
-                id = "10";
-            } else {
-                id = "20";
-            }
-        } else {
-            id = "30";
-        }
-        //TODO userId
-        id += "" + DatabaseConector.getRezepte().size();
-
-
-        return id;
-    }
 
 }

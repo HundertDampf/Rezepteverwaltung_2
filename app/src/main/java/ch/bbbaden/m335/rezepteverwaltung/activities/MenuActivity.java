@@ -1,16 +1,16 @@
 package ch.bbbaden.m335.rezepteverwaltung.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
-import ch.bbbaden.m335.rezepteverwaltung.services.AppDatabase;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
-import ch.bbbaden.m335.rezepteverwaltung.tools.*;
+import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
+import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -34,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
         btnAlleRezepte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepte());
+                DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepteCombined());
                 goToNewActivity(RezepteListActivity.class);
             }
         });
@@ -79,11 +79,33 @@ public class MenuActivity extends AppCompatActivity {
         DatabaseConector.deleteRezepte();
         for (int i = 0; i < 15; i++) {
             Rezept fillRezept = new Rezept();
-            fillRezept.setRezeptId("3041701" + i);
             fillRezept.setRezeptName("Rezept" + i);
             fillRezept.setRezeptZubereitung("Zubereitung " + i + " " + getResources().getString(R.string.large_text));
-            DatabaseConector.addRezept(fillRezept);
+            fillRezept.setRezeptAuthor("1701");
+
+            if (i < 5) {
+                fillRezept.setRezeptOnline(false);
+            } else {
+                if (i < 10) {
+                    fillRezept.setRezeptOnline(true);
+                    fillRezept.setRezeptPublic(false);
+                } else {
+                    fillRezept.setRezeptOnline(true);
+                    fillRezept.setRezeptPublic(true);
+                }
+            }
+            fillRezept.setRezeptId(DatabaseConector.generateId(fillRezept));
+
+            if (fillRezept.isRezeptOnline()) {
+                new FirebaseConector().addRezeptToFirebase(fillRezept);
+                DatabaseConector.addRezept(fillRezept);
+            } else {
+                DatabaseConector.addRezept(fillRezept);
+            }
+            DataHolder.getInstance().setRezept(fillRezept);
+
         }
 
     }
+
 }
