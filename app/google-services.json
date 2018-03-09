@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "630414257630",
+    "firebase_url": "https://rezepteverwaltung.firebaseio.com",
+    "project_id": "rezepteverwaltung",
+    "storage_bucket": "rezepteverwaltung.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:630414257630:android:24deaf5cc58b7388",
+        "android_client_info": {
+          "package_name": "ch.bbbaden.m335.rezepteverwaltung"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "630414257630-fu6ku29jvm2gnn5ab5u2lsqekms2t702.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.bbbaden.m335.rezepteverwaltung",
+            "certificate_hash": "c89e1109fbad78c0caa26236d19a99b8055d34a7"
+          }
+        },
+        {
+          "client_id": "630414257630-a2mnln825cq6eja0bn6jmm0bc7o21pnd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ch.bbbaden.m335.rezepteverwaltung",
+            "certificate_hash": "e07f914623f18db94af6352abaab1493a4b4ae11"
+          }
+        },
+        {
+          "client_id": "630414257630-ti9ufhviu6cupo41ijkfm06bifeqrimm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtnAHl1lGB9K1Wo4MsTBMGysOBHWisGyQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630414257630-ti9ufhviu6cupo41ijkfm06bifeqrimm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
