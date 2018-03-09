@@ -22,10 +22,8 @@ import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 public class MainActivity extends AppCompatActivity {
     public static Context context;
 
-    private String inputName;
-    private String inputPassword;
 
-    EditText editName;
+    EditText editMail;
     EditText editPassword;
     Button btnEnter;
     Button btnSignUp;
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         btnEnter = findViewById(R.id.btnMainLogin);
-        editName = findViewById(R.id.editMainName);
+        editMail = findViewById(R.id.editMainMail);
         editPassword = findViewById(R.id.editMainPasswort);
         progressBar = findViewById(R.id.progressBar);
         btnSignUp = findViewById(R.id.btnMainSignUp);
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String inputEmail = editName.getText().toString();
+                String inputEmail = editMail.getText().toString();
                 final String inputPassword = editPassword.getText().toString();
 
                 if (TextUtils.isEmpty(inputEmail)) {

@@ -1,9 +1,9 @@
 package ch.bbbaden.m335.rezepteverwaltung.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
+import ch.bbbaden.m335.rezepteverwaltung.objects.User;
+import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
+import ch.bbbaden.m335.rezepteverwaltung.tools.FileMaker;
 import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 
 public class SignupActivity extends AppCompatActivity {
@@ -75,6 +78,7 @@ public class SignupActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     new Toaster(SignupActivity.this, "Authentication failed." + task.getException(), 1);
                                 } else {
+                                    generateUser();
                                     startActivity(new Intent(SignupActivity.this, MainActivity.class));
                                     finish();
                                 }
@@ -83,6 +87,15 @@ public class SignupActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void generateUser() {
+        FirebaseConector connect = new FirebaseConector();
+        User user = new User();
+        user.setUserNsme("");
+        user.setUserShortId("" + (connect.getAllUsers().size() + 1));
+        new FileMaker().userToString(user, auth.getUid());
+        connect.addUserToFirebase(user, auth.getUid());
     }
 
     @Override

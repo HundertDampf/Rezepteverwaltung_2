@@ -29,6 +29,8 @@
     <string name="dbpublic">publicRezepte</string>
     <string name="dbprivate">privateRezepte</string>
 
+    <string name="users">users</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
