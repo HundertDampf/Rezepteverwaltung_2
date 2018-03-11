@@ -31,6 +31,8 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+//        System.out.println("new FirebaseConector().downloadAllRezepte().size()" + new FirebaseConector().downloadAllRezepte().size());
+
         btnAlleRezepte = findViewById(R.id.btnMenuAlleRezepte);
         btnSuche = findViewById(R.id.btnMenuGoToSuche);
         btnGluck = findViewById(R.id.btnMenuGluck);

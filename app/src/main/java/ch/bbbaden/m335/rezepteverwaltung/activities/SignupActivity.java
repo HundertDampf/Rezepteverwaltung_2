@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.List;
+
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
@@ -95,11 +97,14 @@ public class SignupActivity extends AppCompatActivity {
     private void generateUser(String userName) {
         FirebaseConector connect = new FirebaseConector();
         User user = new User();
+        System.out.println("vor assign");
+        List<User> users = connect.getAllUsers();
+        System.out.println("nachher" );
 
-        System.out.println("-"+(connect.getAllUsers().size() + 1));
+        System.out.println("-" + (users.size() + 1));
 
         user.setUserName(userName);
-        user.setUserShortId((connect.getAllUsers().size() + 1));
+        user.setUserShortId((users.size() + 1));
         user.setUserEmail(editEmail.getText().toString());
 
         new FileMaker().userToString(user, auth.getUid());
