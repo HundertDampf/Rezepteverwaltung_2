@@ -86,6 +86,7 @@ public class FirebaseConector {
 
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
                     returnList.add(noteDataSnapshot.getValue(User.class));
+                    System.out.println("returnList().size() ="+returnList.size());
                 }
             }
 
@@ -94,6 +95,7 @@ public class FirebaseConector {
 
             }
         });
+        System.out.println("returnList.size() 2="+returnList.size());
         return returnList;
     }
 

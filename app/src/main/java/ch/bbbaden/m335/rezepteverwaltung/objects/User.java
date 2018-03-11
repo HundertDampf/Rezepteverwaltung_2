@@ -10,10 +10,14 @@ import lombok.Setter;
 public class User {
     @Getter
     @Setter
-    private String userShortId;
+    private long userShortId;
 
     @Getter
     @Setter
-    private String userNsme;
+    private String userName;
+
+    @Getter
+    @Setter
+    private String userEmail;
 
 }

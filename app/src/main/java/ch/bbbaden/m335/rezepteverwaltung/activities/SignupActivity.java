@@ -23,9 +23,10 @@ import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText editEmail, editPassword, editUserName;
     private Button btnSignUp;
     private ProgressBar progressBar;
+
     private FirebaseAuth auth;
 
     @Override
@@ -36,18 +37,20 @@ public class SignupActivity extends AppCompatActivity {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
-        btnSignUp = (Button) findViewById(R.id.btnSupSignup);
-        inputEmail = (EditText) findViewById(R.id.editSupEmail);
-        inputPassword = (EditText) findViewById(R.id.editSupPassword);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        btnSignUp = findViewById(R.id.btnSupSignup);
+        editEmail = findViewById(R.id.editSupEmail);
+        editUserName = findViewById(R.id.editSupUserName);
+        editPassword = findViewById(R.id.editSupPassword);
+        progressBar = findViewById(R.id.progressBar);
 
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                String email = editEmail.getText().toString().trim();
+                String password = editPassword.getText().toString().trim();
+                final String userName = editUserName.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
                     new Toaster(getApplicationContext(), "Enter email address!", 1);
@@ -78,7 +81,7 @@ public class SignupActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     new Toaster(SignupActivity.this, "Authentication failed." + task.getException(), 1);
                                 } else {
-                                    generateUser();
+                                    generateUser(userName);
                                     startActivity(new Intent(SignupActivity.this, MainActivity.class));
                                     finish();
                                 }
@@ -89,11 +92,16 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void generateUser() {
+    private void generateUser(String userName) {
         FirebaseConector connect = new FirebaseConector();
         User user = new User();
-        user.setUserNsme("");
-        user.setUserShortId("" + (connect.getAllUsers().size() + 1));
+
+        System.out.println("-"+(connect.getAllUsers().size() + 1));
+
+        user.setUserName(userName);
+        user.setUserShortId((connect.getAllUsers().size() + 1));
+        user.setUserEmail(editEmail.getText().toString());
+
         new FileMaker().userToString(user, auth.getUid());
         connect.addUserToFirebase(user, auth.getUid());
     }
