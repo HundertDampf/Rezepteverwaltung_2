@@ -93,7 +93,7 @@ public class SignupActivity extends AppCompatActivity {
         FirebaseConector connect = new FirebaseConector();
         User user = new User();
         user.setUserNsme("");
-        user.setUserShortId("" + (connect.getAllUsers().size() + 1));
+        user.setUserShortId((connect.getAllUsers().size() + 1));
         new FileMaker().userToString(user, auth.getUid());
         connect.addUserToFirebase(user, auth.getUid());
     }
