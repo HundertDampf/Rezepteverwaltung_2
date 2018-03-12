@@ -31,6 +31,8 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+//        System.out.println("new FirebaseConector().downloadAllRezepte().size()" + new FirebaseConector().downloadAllRezepte().size());
+
         btnAlleRezepte = findViewById(R.id.btnMenuAlleRezepte);
         btnSuche = findViewById(R.id.btnMenuGoToSuche);
         btnGluck = findViewById(R.id.btnMenuGluck);
@@ -81,19 +83,14 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 auth.signOut();
 
-// this listener will be called when there is change in firebase user session
-                FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        if (user == null) {
-                            // user auth state is changed - user is null
-                            // launch login activity
-                            startActivity(new Intent(MenuActivity.this, MainActivity.class));
-                            finish();
-                        }
-                    }
-                };
+                FirebaseUser user = auth.getCurrentUser();
+                if (user == null) {
+                    // user auth state is changed - user is null
+                    // launch login activity
+                    startActivity(new Intent(MenuActivity.this, MainActivity.class));
+                    finish();
+                }
+
             }
         });
     }

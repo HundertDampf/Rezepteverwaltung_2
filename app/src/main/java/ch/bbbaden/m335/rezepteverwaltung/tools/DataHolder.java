@@ -4,6 +4,7 @@ import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 
+import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,10 @@ public class DataHolder {
     @Setter
     @Getter
     private List<Rezept> rezepteListe;
+
+    @Setter
+    @Getter
+    private List<User> userListe;
 
     @Getter
     @Setter

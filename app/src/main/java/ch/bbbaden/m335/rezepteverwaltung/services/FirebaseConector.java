@@ -13,6 +13,7 @@ import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.activities.MainActivity;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
+import ch.bbbaden.m335.rezepteverwaltung.tools.*;
 
 /**
  * Created by Noah on 02.03.2018.
@@ -37,6 +38,7 @@ public class FirebaseConector {
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
                     returnList.add(noteDataSnapshot.getValue(Rezept.class));
                 }
+                DataHolder.getInstance().setRezepteListe(returnList);
             }
 
             @Override
@@ -44,7 +46,7 @@ public class FirebaseConector {
 
             }
         });
-        return returnList;
+        return DataHolder.getInstance().getRezepteListe();
     }
 
     public List<Rezept> downloadAllFromUser(int userId) {
@@ -58,6 +60,7 @@ public class FirebaseConector {
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
                     returnList.add(noteDataSnapshot.getValue(Rezept.class));
                 }
+                DataHolder.getInstance().setRezepteListe(returnList);
             }
 
             @Override
@@ -65,7 +68,7 @@ public class FirebaseConector {
 
             }
         });
-        return returnList;
+        return DataHolder.getInstance().getRezepteListe();
     }
 
     public void addRezeptToFirebase(Rezept rezept) {
@@ -77,23 +80,31 @@ public class FirebaseConector {
     }
 
     public List<User> getAllUsers() {
-        final List<User> returnList = new ArrayList<>();
-        mDatabase.child("users").addValueEventListener(new ValueEventListener() {
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        System.out.println(getClass().toString()+"getAllUsers");
+        List<User> returnList;
+        mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("From Firebase Users");
-
+                List<User> userList = new ArrayList<>();
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    returnList.add(noteDataSnapshot.getValue(User.class));
+                    User user =noteDataSnapshot.getValue(User.class);
+                    System.out.println("userMail "+user.getUserEmail());
+                    userList.add(user);
+                    System.out.println("1 returnList().size() =" + userList.size());
                 }
+                DataHolder.getInstance().setUserListe(userList);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
+        returnList = DataHolder.getInstance().getUserListe();
+        //System.out.println("2 returnList.size() 2=" + returnList.size());
         return returnList;
     }
 

@@ -14,6 +14,10 @@ public class User {
 
     @Getter
     @Setter
-    private String userNsme;
+    private String userName;
+
+    @Getter
+    @Setter
+    private String userEmail;
 
 }
