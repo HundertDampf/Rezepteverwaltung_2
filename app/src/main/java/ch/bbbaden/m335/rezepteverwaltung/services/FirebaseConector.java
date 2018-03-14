@@ -121,7 +121,7 @@ public class FirebaseConector {
     public void getAllUsers() {
         System.out.println(getClass().toString() + "getAllUsers");
 
-        mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("From Firebase Users");
@@ -150,14 +150,17 @@ public class FirebaseConector {
         System.out.println("add user--------------------------------------------------");
     }
 
-    public User getUserById(String userId) {
-        final List<User> user = new ArrayList<>();
-        mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).child(userId).addValueEventListener(new ValueEventListener() {
-            User userI;
-
+    public void getUserById(String userId) {
+        System.out.println("getUserbyID *****************************************************+***********************-+*");
+        mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user.add(dataSnapshot.getValue(User.class));
+                System.out.println("UPDATE USER &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+                User user = dataSnapshot.getValue(User.class);
+                if (DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()) != null) {
+                    DatabaseConector.deleteUser(user);
+                }
+                DatabaseConector.addUser(user);
             }
 
             @Override
@@ -166,6 +169,6 @@ public class FirebaseConector {
             }
         });
 
-        return user.get(0);
+
     }
 }

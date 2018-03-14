@@ -30,7 +30,7 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        new FirebaseConector().downloadAllRezepte(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId()));
+
 
         btnAlleRezepte = findViewById(R.id.btnMenuAlleRezepte);
         btnSuche = findViewById(R.id.btnMenuGoToSuche);
@@ -65,7 +65,8 @@ public class MenuActivity extends AppCompatActivity {
 //                Rezept random = getRandomRezept();
 //                new Toaster(getApplicationContext(), random.getRezeptName() + " RezeptNamer", 1);
 //                DataHolder.getInstance().setRezept(random);
-                goToNewActivity(RezeptActivity.class);
+                // goToNewActivity(RezeptActivity.class);
+                new FirebaseConector().downloadAllRezepte(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId()));
             }
         });
 
@@ -104,8 +105,8 @@ public class MenuActivity extends AppCompatActivity {
         for (int i = 0; i < 15; i++) {
             Rezept fillRezept = new Rezept();
             fillRezept.setRezeptName("Rezept" + i);
-            fillRezept.setRezeptZubereitung("Zubereitung " + i + " " + getResources().getString(R.string.large_text));
             fillRezept.setRezeptAuthor(DatabaseConector.getUserByMail(auth.getCurrentUser().getEmail()).getUserName());
+            fillRezept.setRezeptZubereitung("Author: " + fillRezept.getRezeptAuthor() + " Zubereitung " + i + " " + getResources().getString(R.string.large_text));
 
             if (i < 5) {
                 fillRezept.setRezeptOnline(false);

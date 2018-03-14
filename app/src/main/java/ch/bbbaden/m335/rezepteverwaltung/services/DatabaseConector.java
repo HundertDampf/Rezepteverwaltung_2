@@ -59,7 +59,7 @@ public class DatabaseConector {
         }
 
         returnId += "" + String.valueOf(userId).length() + userId + DatabaseConector.getRezepte().size();
-
+        System.out.println("returnId " + returnId);
         return returnId;
     }
 
@@ -113,5 +113,10 @@ public class DatabaseConector {
         if (rezepteArray.length > 0) {
             addRezepte(rezepteArray);
         }
+    }
+
+    public static void deleteUser(User user) {
+        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
+        db.userDAO().delete(user);
     }
 }

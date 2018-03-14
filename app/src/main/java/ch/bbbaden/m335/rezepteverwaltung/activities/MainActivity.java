@@ -17,10 +17,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
-import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
-import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
-import ch.bbbaden.m335.rezepteverwaltung.tools.FileMaker;
 import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
         auth = FirebaseAuth.getInstance();
-
+        //getUserFromFiles(auth.getUid());
 
         btnEnter = findViewById(R.id.btnMainLogin);
         editMail = findViewById(R.id.editMainMail);
@@ -110,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getUserFromFiles(String userMail) {
-        DataHolder.getInstance().setUser(DatabaseConector.getUserByMail(userMail));
+        new FirebaseConector().getUserById(auth.getUid());
 
     }
 }
