@@ -1,6 +1,7 @@
 package ch.bbbaden.m335.rezepteverwaltung.services;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,21 +34,38 @@ public class FirebaseConector {
         final List<Rezept> returnPrivateList = new ArrayList<>();
 
 
-        mDatabase.child("publicRezepte").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("publicRezepte").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
                 System.out.println("From Firebase rezepte public");
 
-                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot noteDataSnapshot : snapshot.getChildren()) {
                     returnList.add(noteDataSnapshot.getValue(Rezept.class));
                 }
-//                DatabaseConector.addRezepteFromFirebase(returnList);
+                DatabaseConector.addRezepteFromFirebase(returnList);
             }
 
+
+            @Override
+            public void onChildRemoved(DataSnapshot snapshot) {
+
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
+
+            }
+
+
         });
         mDatabase.child("privateRezepte").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
