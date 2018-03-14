@@ -15,17 +15,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
+import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
-import ch.bbbaden.m335.rezepteverwaltung.tools.FileMaker;
-import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
+import ch.bbbaden.m335.rezepteverwaltung.tools.*;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword;
+    private EditText editEmail, editPassword, editUserName;
     private Button btnSignUp;
     private ProgressBar progressBar;
 
@@ -71,8 +72,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
                 //create user
-                auth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 new Toaster(SignupActivity.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), 1);
@@ -83,7 +83,10 @@ public class SignupActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     new Toaster(SignupActivity.this, "Authentication failed." + task.getException(), 1);
                                 } else {
-                                    generateUser(userName);
+
+                                    System.out.println("call listerner");
+                                    generateUser();
+
                                     startActivity(new Intent(SignupActivity.this, MainActivity.class));
                                     finish();
                                 }
@@ -94,20 +97,21 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void generateUser(String userName) {
-        FirebaseConector connect = new FirebaseConector();
+    private void generateUser() {
         User user = new User();
+        List<User> users = new ArrayList<>();
+        FirebaseConector connect = new FirebaseConector();
         System.out.println("vor assign");
-        List<User> users = connect.getAllUsers();
-        System.out.println("nachher" );
+        users = DataHolder.getInstance().getUserListe();
+        System.out.println("nachher");
 
         System.out.println("-" + (users.size() + 1));
 
-        user.setUserName(userName);
+        user.setUserName(editUserName.getText().toString());
         user.setUserShortId((users.size() + 1));
         user.setUserEmail(editEmail.getText().toString());
-
-        new FileMaker().userToString(user, auth.getUid());
+        DatabaseConector.addUser(user);
+        DataHolder.getInstance().setUser(user);
         connect.addUserToFirebase(user, auth.getUid());
     }
 

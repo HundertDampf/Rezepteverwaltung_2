@@ -3,7 +3,6 @@ package ch.bbbaden.m335.rezepteverwaltung.tools;
 import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
-
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +28,9 @@ public class DataHolder {
     @Setter
     private int saveId;
 
+    @Setter
+    @Getter
+    User user;
 
     private static final DataHolder holder = new DataHolder();
 

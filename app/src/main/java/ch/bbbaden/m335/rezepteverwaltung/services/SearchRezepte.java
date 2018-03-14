@@ -16,7 +16,7 @@ public class SearchRezepte {
 
     public List<Rezept> doSearch(String queryName, String queryAuthor, List<String> queryZutaten) {
         try {
-            alleRezepte = DatabaseConector.getRezepteCombined();
+            alleRezepte = DatabaseConector.getRezepte();
         } catch (Exception e) {
             System.out.println("Datenbank fehler");
         }
@@ -67,6 +67,6 @@ public class SearchRezepte {
     }
 
 //    private static List<Rezept> getAlleRezepte(final AppDatabase db) {
-//        return db.rezeptDAO().getAll();
+//        return db.rezeptDAO().getAllRezepte();
 //    }
 }

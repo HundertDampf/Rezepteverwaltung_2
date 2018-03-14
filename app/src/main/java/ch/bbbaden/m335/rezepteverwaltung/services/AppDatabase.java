@@ -6,14 +6,17 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 
 /**
  * Created by Noah on 02.03.2018.
  */
 
-@Database(entities = {Rezept.class}, version = 1)
+@Database(entities = {Rezept.class, User.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RezeptDAO rezeptDAO();
+
+    public abstract UserDAO userDAO();
 
     private static AppDatabase INSTANCE;
 

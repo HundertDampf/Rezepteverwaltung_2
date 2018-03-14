@@ -61,14 +61,13 @@ public class FileMaker {
     }
 
     public String userToString(User user, String userId) {
-
+        System.out.println("generiere File name: " + userId);
         try {
-            FileOutputStream fileOut =
-                    new FileOutputStream("/user/" + userId);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(user);
-            out.close();
-            fileOut.close();
+            FileOutputStream fos = MainActivity.context.openFileOutput(userId, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(user);
+            os.close();
+            fos.close();
         } catch (IOException i) {
             i.printStackTrace();
         }
@@ -76,9 +75,10 @@ public class FileMaker {
     }
 
     public User stringToUser(String userId) {
+        System.out.println("getting file " + userId);
         User user;
         try {
-            FileInputStream fileIn = new FileInputStream("/user/" + userId);
+            FileInputStream fileIn = new FileInputStream(userId);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             user = (User) in.readObject();
             in.close();

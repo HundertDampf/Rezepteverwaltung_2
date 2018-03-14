@@ -2,10 +2,12 @@ package ch.bbbaden.m335.rezepteverwaltung.services;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.activities.MainActivity;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 
 /**
  * Created by Noah on 07.03.2018.
@@ -13,16 +15,21 @@ import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 
 public class DatabaseConector {
 
-    public static Rezept addRezept(Rezept rezept) {
+    public static void addRezepte(Rezept[] rezepte) {
+        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
+        db.rezeptDAO().insertAll(rezepte);
+        System.out.println("Rezept added, DBConector");
+    }
+
+    public static void addRezept(Rezept rezept) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
         db.rezeptDAO().insertAll(rezept);
         System.out.println("Rezept added, DBConector");
-        return rezept;
     }
 
     public static List<Rezept> getRezepte() {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        List<Rezept> rezepts = db.rezeptDAO().getAll();
+        List<Rezept> rezepts = db.rezeptDAO().getAllRezepte();
         System.out.println("RezepteListe Grösse: " + rezepts.size());
         return rezepts;
     }
@@ -34,26 +41,12 @@ public class DatabaseConector {
 
     public static Rezept getRezepteById(String id) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        return db.rezeptDAO().loadAllByIds(Integer.parseInt(id));
-    }
-
-    public static List<Rezept> getRezepteCombined() {
-        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        List<Rezept> rezepte = db.rezeptDAO().getAll();
-        System.out.println("RezepteListe Grösse lokal: " + rezepte.size());
-        List<Rezept> fbRezepte = new FirebaseConector().downloadAllRezepte();
-        for (int i = 0; i < fbRezepte.size(); i++) {
-            if (getRezepteById(fbRezepte.get(i).getRezeptId()) == null) {
-                rezepte.add(fbRezepte.get(i));
-            }
-        }
-
-        return rezepte;
+        return db.rezeptDAO().loadAllRezepteByIds(Integer.parseInt(id));
     }
 
     static public String generateId(Rezept rezept) {
         String returnId;
-        String userId = FirebaseAuth.getInstance().getUid();
+        String userId = getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId() + "";
 
         if (rezept.isRezeptOnline()) {
             if (rezept.isRezeptPublic()) {
@@ -65,8 +58,60 @@ public class DatabaseConector {
             returnId = "30";
         }
 
-        returnId += "" + String.valueOf(rezept.getRezeptAuthor()).length() + userId + DatabaseConector.getRezepteCombined().size();
+        returnId += "" + String.valueOf(userId).length() + userId + DatabaseConector.getRezepte().size();
 
         return returnId;
+    }
+
+    public static User getUserByMail(String userMail) {
+        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
+
+        return db.userDAO().loadUserByMail(userMail);
+    }
+
+    public static User addUser(User user) {
+        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
+        db.userDAO().insertAll(user);
+        System.out.println("User added, DBConector");
+        return user;
+    }
+
+    public static void addRezepteFromFirebase(List<Rezept> rezepteFromFirebase) {
+        List<Rezept> rezepteFromRoom = getRezepte();
+        List<Rezept> returnList = new ArrayList<>();
+
+        System.out.println("rezeptefromFB size " + rezepteFromFirebase.size());
+        System.out.println("rezeptefromroom size " + rezepteFromRoom.size());
+
+
+        for (int i = 0; i < rezepteFromFirebase.size(); i++) {
+            boolean isInRoomDb = false;
+            System.out.println("FB loop " + i);
+            for (int j = 0; j < rezepteFromRoom.size(); j++) {
+
+                System.out.println("Room loop " + i + "  " + j);
+                System.out.println(rezepteFromFirebase.get(i).getRezeptId());
+                System.out.println(rezepteFromRoom.get(j).getRezeptId());
+
+                if (rezepteFromFirebase.get(i).getRezeptId().equals(rezepteFromRoom.get(j).getRezeptId())) {
+                    isInRoomDb = true;
+                }
+                System.out.println(isInRoomDb);
+            }
+
+            if (!isInRoomDb) {
+                returnList.add(rezepteFromFirebase.get(i));
+            }
+        }
+        Rezept[] rezepteArray = new Rezept[returnList.size()];
+        for (int i = 0; i < returnList.size(); i++) {
+            rezepteArray[i] = returnList.get(i);
+        }
+        System.out.println("rezeptearray length " + rezepteArray.length);
+        System.out.println(rezepteArray.toString());
+
+        if (rezepteArray.length > 0) {
+            addRezepte(rezepteArray);
+        }
     }
 }

@@ -2,7 +2,6 @@ package ch.bbbaden.m335.rezepteverwaltung.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +30,7 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-//        System.out.println("new FirebaseConector().downloadAllRezepte().size()" + new FirebaseConector().downloadAllRezepte().size());
+        new FirebaseConector().downloadAllRezepte(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId()));
 
         btnAlleRezepte = findViewById(R.id.btnMenuAlleRezepte);
         btnSuche = findViewById(R.id.btnMenuGoToSuche);
@@ -43,7 +42,7 @@ public class MenuActivity extends AppCompatActivity {
         btnAlleRezepte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepteCombined());
+                DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepte());
                 goToNewActivity(RezepteListActivity.class);
             }
         });
@@ -106,7 +105,7 @@ public class MenuActivity extends AppCompatActivity {
             Rezept fillRezept = new Rezept();
             fillRezept.setRezeptName("Rezept" + i);
             fillRezept.setRezeptZubereitung("Zubereitung " + i + " " + getResources().getString(R.string.large_text));
-            fillRezept.setRezeptAuthor("1701");
+            fillRezept.setRezeptAuthor(DatabaseConector.getUserByMail(auth.getCurrentUser().getEmail()).getUserName());
 
             if (i < 5) {
                 fillRezept.setRezeptOnline(false);

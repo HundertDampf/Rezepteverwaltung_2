@@ -17,6 +17,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
+import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
+import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
+import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
+import ch.bbbaden.m335.rezepteverwaltung.tools.FileMaker;
 import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         auth = FirebaseAuth.getInstance();
 
+
         btnEnter = findViewById(R.id.btnMainLogin);
         editMail = findViewById(R.id.editMainMail);
         editPassword = findViewById(R.id.editMainPasswort);
@@ -45,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnMainSignUp);
 
         if (auth.getCurrentUser() != null) {
+            getUserFromFiles(auth.getUid());
             startActivity(new Intent(this, MenuActivity.class));
             finish();
         }
@@ -52,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseConector conector = new FirebaseConector();
+                conector.getAllUsers();
                 startActivity(new Intent(context, SignupActivity.class));
             }
         });
@@ -89,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                                 new Toaster(getApplicationContext(), "Login Fehler", 1);
                             }
                         } else {
+                            getUserFromFiles(auth.getCurrentUser().getEmail());
                             startActivity(new Intent(context, MenuActivity.class));
                             finish();
                         }
@@ -97,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void getUserFromFiles(String userMail) {
+        DataHolder.getInstance().setUser(DatabaseConector.getUserByMail(userMail));
 
     }
 }

@@ -12,10 +12,11 @@ import lombok.Setter;
  */
 @Entity(tableName = "rezepte")
 public class Rezept {
-    @Getter
-    @Setter
+
     @PrimaryKey
     @NonNull
+    @Getter
+    @Setter
     private String rezeptId;
 
     @Getter

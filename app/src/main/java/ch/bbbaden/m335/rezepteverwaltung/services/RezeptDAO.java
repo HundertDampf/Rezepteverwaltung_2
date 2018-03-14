@@ -8,6 +8,7 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 
 /**
  * Created by Noah on 02.03.2018.
@@ -16,13 +17,13 @@ import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 @Dao
 public interface RezeptDAO {
     @Query("SELECT * FROM rezepte")
-    List<Rezept> getAll();
+    List<Rezept> getAllRezepte();
 
     @Query("SELECT * FROM rezepte WHERE rezeptId IN (:rezeptId)")
-    Rezept loadAllByIds(int rezeptId);
+    Rezept loadAllRezepteByIds(int rezeptId);
 
     @Query("SELECT * FROM rezepte WHERE rezeptName LIKE :name LIMIT 1")
-    Rezept findByName(String name);
+    Rezept findByRezepteName(String name);
 
     @Insert
     void insertAll(Rezept... rezepte);
@@ -32,4 +33,6 @@ public interface RezeptDAO {
 
     @Query("DELETE FROM rezepte")
     void deleteAll();
+
+
 }

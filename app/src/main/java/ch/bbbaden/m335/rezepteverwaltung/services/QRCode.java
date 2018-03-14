@@ -20,7 +20,7 @@ import static ch.bbbaden.m335.rezepteverwaltung.activities.ShareRezepteActivity.
 public class QRCode {
     public Rezept interpretQr(String qrResult) {
         Rezept tempReturnRezept = new Rezept();
-      //  tempReturnRezept.setRezeptId(AppDatabase.getAppDatabase(MainActivity.context).rezeptDAO().getAll().size() + 1);
+        //  tempReturnRezept.setRezeptId(AppDatabase.getAppDatabase(MainActivity.context).rezeptDAO().getAllRezepte().size() + 1);
         tempReturnRezept.setRezeptName("QR Scaner comming soon");
         tempReturnRezept.setRezeptZubereitung(qrResult);
         tempReturnRezept.setRezeptDauer("Soon(tm)");

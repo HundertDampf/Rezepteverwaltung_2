@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
@@ -100,7 +102,7 @@ public class AddRezeptActivity extends AppCompatActivity {
         addRezept.setRezeptDauer(editTexts[3].getText().toString());
         addRezept.setRezeptZubereitung(editTexts[1].getText().toString());
         isOnline();
-        addRezept.setRezeptAuthor("42"); //TODO author
+        addRezept.setRezeptAuthor(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserName());
         addRezept.setRezeptId(DatabaseConector.generateId(addRezept));
 
         System.out.println("SaveRezept() " + addRezept.getRezeptId());
