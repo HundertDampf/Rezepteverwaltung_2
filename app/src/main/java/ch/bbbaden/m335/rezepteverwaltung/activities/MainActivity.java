@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
         auth = FirebaseAuth.getInstance();
-        //getUserFromFiles(auth.getUid());
+        FirebaseConector conector = new FirebaseConector();
+        conector.getAllUsers();
 
         btnEnter = findViewById(R.id.btnMainLogin);
         editMail = findViewById(R.id.editMainMail);
@@ -55,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseConector conector = new FirebaseConector();
-                conector.getAllUsers();
                 startActivity(new Intent(context, SignupActivity.class));
             }
         });
@@ -108,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getUserFromFiles(String userMail) {
         new FirebaseConector().getUserById(auth.getUid());
+        //TODO Schauen wegen meheren Listener für User
 
     }
 }

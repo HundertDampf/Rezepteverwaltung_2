@@ -1,7 +1,6 @@
 package ch.bbbaden.m335.rezepteverwaltung.services;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,48 +32,75 @@ public class FirebaseConector {
         final List<Rezept> returnList = new ArrayList<>();
         final List<Rezept> returnPrivateList = new ArrayList<>();
 
+        if (DataHolder.getInstance().getUserListe() != null) {
+            for (int i = 0; i < DataHolder.getInstance().getUserListe().size(); i++) {
+                if (DataHolder.getInstance().getUserListe().get(i).getUserLongId() != null) {
+                    mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(DataHolder.getInstance().getUserListe().get(i).getUserLongId()).addValueEventListener(new ValueEventListener() {
 
-        mDatabase.child("publicRezepte").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
-                System.out.println("From Firebase rezepte public");
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
 
-                for (DataSnapshot noteDataSnapshot : snapshot.getChildren()) {
-                    returnList.add(noteDataSnapshot.getValue(Rezept.class));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-                DatabaseConector.addRezepteFromFirebase(returnList);
             }
-
-
-            @Override
-            public void onChildRemoved(DataSnapshot snapshot) {
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
-
-            }
-
-
-        });
+        } else {
+            System.out.println("Döödö");
+        }
+//     mDatabase.child("publicRezepte").addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+//                System.out.println("From Firebase rezepte public");
+//                int i = 1;
+//                for (DataSnapshot noteDataSnapshot : snapshot.getChildren()) {
+//                    returnList.add(noteDataSnapshot.getValue(Rezept.class));
+//                    System.out.println("Loopdeliloop #" + i);
+//                    i += 1;
+//                }
+//
+//                if (returnList.size() == 0) {
+//                    System.out.println("Alarm! Liste ist leer");
+//                }
+//                DatabaseConector.addRezepteFromFirebase(returnList);
+//            }
+//
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//
+//            @Override
+//            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
+//
+//            }
+//
+//
+//        });
         mDatabase.child("privateRezepte").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("From Firebase rezepte private");
-
+                int i = 1;
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    //System.out.println("rezept id "+noteDataSnapshot.getValue(Rezept.class).getRezeptId());
                     returnPrivateList.add(noteDataSnapshot.getValue(Rezept.class));
+                    System.out.println("Loopdelilooplooop private #" + i);
+                    i += 1;
                 }
                 DatabaseConector.addRezepteFromFirebase(returnPrivateList);
             }
@@ -90,7 +116,7 @@ public class FirebaseConector {
 
     public List<Rezept> downloadAllFromUser(int userId) {
         final List<Rezept> returnList = new ArrayList<>();
-        mDatabase.child("publicRezepter").child("" + userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("publicRezepte").child("" + userId).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -120,7 +146,7 @@ public class FirebaseConector {
 
     public void getAllUsers() {
         System.out.println(getClass().toString() + "getAllUsers");
-
+        System.out.println(MainActivity.context.getResources().getString(R.string.users));
         mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -157,10 +183,19 @@ public class FirebaseConector {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("UPDATE USER &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
                 User user = dataSnapshot.getValue(User.class);
-                if (DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()) != null) {
-                    DatabaseConector.deleteUser(user);
+                User localUser = DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                if (localUser == null) {
+                    DatabaseConector.addUser(user);
+                } else {
+                    System.out.println("localMail " + localUser.getUserEmail());
+                    System.out.println("fbmail " + user.getUserEmail());
+
+                    if (localUser.getUserEmail().equals(user.getUserEmail())) {
+                        System.out.println("delete and add called");
+                        DatabaseConector.deleteUser(localUser);
+                        DatabaseConector.addUser(user);
+                    }
                 }
-                DatabaseConector.addUser(user);
             }
 
             @Override

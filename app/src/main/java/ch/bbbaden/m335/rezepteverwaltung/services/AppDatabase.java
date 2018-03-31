@@ -12,7 +12,7 @@ import ch.bbbaden.m335.rezepteverwaltung.objects.User;
  * Created by Noah on 02.03.2018.
  */
 
-@Database(entities = {Rezept.class, User.class}, version = 2)
+@Database(entities = {Rezept.class, User.class}, version = 3)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RezeptDAO rezeptDAO();
 

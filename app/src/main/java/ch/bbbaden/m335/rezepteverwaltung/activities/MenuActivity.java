@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
@@ -66,7 +67,7 @@ public class MenuActivity extends AppCompatActivity {
 //                new Toaster(getApplicationContext(), random.getRezeptName() + " RezeptNamer", 1);
 //                DataHolder.getInstance().setRezept(random);
                 // goToNewActivity(RezeptActivity.class);
-                new FirebaseConector().downloadAllRezepte(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId()));
+                new FirebaseConector().downloadAllRezepte(Long.toString(new User().getCurrentUser().getUserShortId()));
             }
         });
 
