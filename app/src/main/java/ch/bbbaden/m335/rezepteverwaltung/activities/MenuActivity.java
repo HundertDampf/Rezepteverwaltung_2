@@ -9,12 +9,18 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
+import java.util.Random;
+
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
+import ch.bbbaden.m335.rezepteverwaltung.services.AppDatabase;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
+import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
+import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 public class MenuActivity extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
@@ -32,7 +38,6 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
 
-
         btnAlleRezepte = findViewById(R.id.btnMenuAlleRezepte);
         btnSuche = findViewById(R.id.btnMenuGoToSuche);
         btnGluck = findViewById(R.id.btnMenuGluck);
@@ -44,30 +49,30 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepte());
-                goToNewActivity(RezepteListActivity.class);
+                new VariousMethods().goToNewActivity(RezepteListActivity.class, getApplicationContext());
             }
         });
 
         btnSuche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNewActivity(SearchRezepteActivity.class);
+                new VariousMethods().goToNewActivity(SearchRezepteActivity.class, getApplicationContext());
             }
         });
         btnNeuesRezept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNewActivity(AddRezepteAuswahlActivity.class);
+                new VariousMethods().goToNewActivity(AddRezepteAuswahlActivity.class, getApplicationContext());
             }
         });
         btnGluck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Rezept random = getRandomRezept();
-//                new Toaster(getApplicationContext(), random.getRezeptName() + " RezeptNamer", 1);
-//                DataHolder.getInstance().setRezept(random);
-                // goToNewActivity(RezeptActivity.class);
-                new FirebaseConector().downloadAllRezepte(Long.toString(new User().getCurrentUser().getUserShortId()));
+                Rezept random = getRandomRezept();
+
+                DataHolder.getInstance().setRezept(random);
+                new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
+
             }
         });
 
@@ -97,30 +102,29 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    public void goToNewActivity(Class goToClass) {
-        startActivity(new Intent(getApplicationContext(), goToClass));
-    }
-
     public void fillDB() {
         DatabaseConector.deleteRezepte();
         for (int i = 0; i < 15; i++) {
             Rezept fillRezept = new Rezept();
-            fillRezept.setRezeptName("Rezept" + i);
+
             fillRezept.setRezeptAuthor(DatabaseConector.getUserByMail(auth.getCurrentUser().getEmail()).getUserName());
             fillRezept.setRezeptZubereitung("Author: " + fillRezept.getRezeptAuthor() + " Zubereitung " + i + " " + getResources().getString(R.string.large_text));
 
             if (i < 5) {
+                fillRezept.setRezeptName("Rezept lokal" + " " + i + fillRezept.getRezeptAuthor());
                 fillRezept.setRezeptOnline(false);
             } else {
                 if (i < 10) {
+                    fillRezept.setRezeptName("Rezept public" + i + " " + fillRezept.getRezeptAuthor());
                     fillRezept.setRezeptOnline(true);
                     fillRezept.setRezeptPublic(false);
                 } else {
+                    fillRezept.setRezeptName("Rezept private" + i + " " + fillRezept.getRezeptAuthor());
                     fillRezept.setRezeptOnline(true);
                     fillRezept.setRezeptPublic(true);
                 }
             }
-            fillRezept.setRezeptId(DatabaseConector.generateId(fillRezept));
+            fillRezept.setRezeptId(new VariousMethods().generateRezeptId((fillRezept)));
 
             if (fillRezept.isRezeptOnline()) {
                 new FirebaseConector().addRezeptToFirebase(fillRezept);
@@ -134,4 +138,9 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
+    public Rezept getRandomRezept() {
+        List<Rezept> rezepte = DatabaseConector.getRezepte();
+        Random rand = new Random();
+        return rezepte.get(rand.nextInt(rezepte.size()));
+    }
 }

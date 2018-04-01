@@ -16,6 +16,7 @@ import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.services.QRCode;
 import ch.bbbaden.m335.rezepteverwaltung.services.barcode.BarcodeCaptureActivity;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
+import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 public class AddRezepteAuswahlActivity extends AppCompatActivity {
 
@@ -40,7 +41,7 @@ public class AddRezepteAuswahlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getRadio();
-                goToNewActivity(AddRezeptActivity.class);
+                new VariousMethods().goToNewActivity(AddRezeptActivity.class, getApplicationContext());
             }
         });
 
@@ -77,7 +78,7 @@ public class AddRezepteAuswahlActivity extends AppCompatActivity {
                     String qrResultat = barcode.displayValue;
                     System.out.println("QR Code        " + barcode.displayValue);
                     DataHolder.getInstance().setRezept(new QRCode().interpretQr(qrResultat));
-                    goToNewActivity(RezeptActivity.class);
+                    new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
 
                 } else {
 //                    mResultTextView.setText(R.string.no_barcode_captured);
@@ -92,8 +93,6 @@ public class AddRezepteAuswahlActivity extends AppCompatActivity {
     }
 
 
-    public void goToNewActivity(Class goToClass) {
-        startActivity(new Intent(getApplicationContext(), goToClass));
-    }
+
 }
 

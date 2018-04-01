@@ -29,17 +29,27 @@ public class FirebaseConector {
     }
 
     public List<Rezept> downloadAllRezepte(String userId) {
-        final List<Rezept> returnList = new ArrayList<>();
         final List<Rezept> returnPrivateList = new ArrayList<>();
+        final List<Rezept> returnPublicList = new ArrayList<>();
 
+        System.out.println("Benutzerliste grösse "+DataHolder.getInstance().getUserListe().size());
         if (DataHolder.getInstance().getUserListe() != null) {
             for (int i = 0; i < DataHolder.getInstance().getUserListe().size(); i++) {
                 if (DataHolder.getInstance().getUserListe().get(i).getUserLongId() != null) {
-                    mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(DataHolder.getInstance().getUserListe().get(i).getUserLongId()).addValueEventListener(new ValueEventListener() {
+                    mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(DataHolder.getInstance().getUserListe().get(i).getUserShortId()+"").addValueEventListener(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
+                            for (DataSnapshot noteDataSnapshot : snapshot.getChildren()) {
+                                System.out.println("public datachange");
+                                returnPublicList.add(noteDataSnapshot.getValue(Rezept.class));
+                            }
 
+                            if(returnPublicList.size()>0){
+                                DatabaseConector.addRezepteFromFirebase(returnPublicList);
+                            }else{
+                                System.out.println("nyet no new rezepete");
+                            }
                         }
 
                         @Override
@@ -52,46 +62,7 @@ public class FirebaseConector {
         } else {
             System.out.println("Döödö");
         }
-//     mDatabase.child("publicRezepte").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
-//                System.out.println("From Firebase rezepte public");
-//                int i = 1;
-//                for (DataSnapshot noteDataSnapshot : snapshot.getChildren()) {
-//                    returnList.add(noteDataSnapshot.getValue(Rezept.class));
-//                    System.out.println("Loopdeliloop #" + i);
-//                    i += 1;
-//                }
-//
-//                if (returnList.size() == 0) {
-//                    System.out.println("Alarm! Liste ist leer");
-//                }
-//                DatabaseConector.addRezepteFromFirebase(returnList);
-//            }
-//
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//
-//            @Override
-//            public void onChildAdded(DataSnapshot snapshot, String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
-//
-//            }
-//
-//
-//        });
+
         mDatabase.child("privateRezepte").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -160,6 +131,7 @@ public class FirebaseConector {
                 }
                 DataHolder.getInstance().setUserListe(userList);
                 System.out.println("Dataholder");
+                new FirebaseConector().downloadAllRezepte(Long.toString(new User().getCurrentUser().getUserShortId()));
             }
 
             @Override

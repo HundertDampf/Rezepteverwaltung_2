@@ -14,7 +14,7 @@ import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
-import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
+import ch.bbbaden.m335.rezepteverwaltung.tools.*;
 
 public class AddRezeptActivity extends AppCompatActivity {
 
@@ -39,20 +39,6 @@ public class AddRezeptActivity extends AppCompatActivity {
             final int y = i;
             System.out.println(y + " <-- y + i--> " + i);
 
-//            if (i < 3) {
-//                editTexts[i].setOnKeyListener(new View.OnKeyListener() {
-//
-//                    @Override
-//                    public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                        if ((keyCode == KeyEvent.KEYCODE_ENTER)) {
-//                            editTexts[y + 1].requestFocus();
-//                            return true;
-//                        } else{
-//                            return false;
-//                    }}
-//                });
-//            }
             editTexts[i].setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -102,8 +88,8 @@ public class AddRezeptActivity extends AppCompatActivity {
         addRezept.setRezeptDauer(editTexts[3].getText().toString());
         addRezept.setRezeptZubereitung(editTexts[1].getText().toString());
         isOnline();
-        addRezept.setRezeptAuthor(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserName());
-        addRezept.setRezeptId(DatabaseConector.generateId(addRezept));
+        addRezept.setRezeptAuthor(new VariousMethods().getCurrentUserData().getUserName());
+        addRezept.setRezeptId(new VariousMethods().generateRezeptId(addRezept));
 
         System.out.println("SaveRezept() " + addRezept.getRezeptId());
 
@@ -115,13 +101,11 @@ public class AddRezeptActivity extends AppCompatActivity {
         }
         DataHolder.getInstance().setRezept(addRezept);
         rezeptAdded = true;   //TODO check if okay
-        goToNewActivity(RezeptActivity.class);
+        new VariousMethods().goToNewActivity(RezeptActivity.class,getApplicationContext());
     }
 
 
-    public void goToNewActivity(Class goToClass) {
-        startActivity(new Intent(getApplicationContext(), goToClass));
-    }
+
 
     public void isOnline() {
         if (DataHolder.getInstance().getSaveId() == 1) {

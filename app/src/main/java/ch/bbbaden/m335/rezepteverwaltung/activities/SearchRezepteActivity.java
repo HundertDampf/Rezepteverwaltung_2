@@ -15,6 +15,7 @@ import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.services.SearchRezepte;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
+import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 public class SearchRezepteActivity extends AppCompatActivity {
 
@@ -55,7 +56,7 @@ public class SearchRezepteActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), RezeptActivity.class));
                     } else if (rezepte.size() > 1) {
                         DataHolder.getInstance().setRezepteListe(rezepte);
-                        startActivity(new Intent(getApplicationContext(), RezepteListActivity.class));
+                        new VariousMethods().goToNewActivity(RezepteListActivity.class, getApplicationContext());
                     } else {
                         new Toaster(getWindow().getDecorView().findViewById(android.R.id.content), "Keine der Suche entsprechenden Rezepte gefunden", -2);
 

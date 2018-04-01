@@ -25,6 +25,9 @@ public interface RezeptDAO {
     @Query("SELECT * FROM rezepte WHERE rezeptName LIKE :name LIMIT 1")
     Rezept findByRezepteName(String name);
 
+    @Query("SELECT * FROM rezepte WHERE rezeptAuthor LIKE :name")
+    List<Rezept> findByRezepteAuthor(String name);
+
     @Insert
     void insertAll(Rezept... rezepte);
 

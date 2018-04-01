@@ -14,6 +14,7 @@ import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
+import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 public class RezepteListActivity extends AppCompatActivity {
     List<Rezept> rezepte;
@@ -29,7 +30,7 @@ public class RezepteListActivity extends AppCompatActivity {
         if (rezepte != null) {
             if (rezepte.size() == 1) {
                 DataHolder.getInstance().setRezept(rezepte.get(0));
-                startActivity(new Intent(getApplicationContext(), RezeptActivity.class));
+                new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
 
             } else if (rezepte.size() > 1) {
                 String[] listItems = new String[rezepte.size()];
@@ -48,7 +49,7 @@ public class RezepteListActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Rezept selectedRecipe = rezepte.get(position);
                         DataHolder.getInstance().setRezept(selectedRecipe);
-                        startActivity(new Intent(getApplicationContext(), RezeptActivity.class));
+                        new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
                     }
 
                 });
