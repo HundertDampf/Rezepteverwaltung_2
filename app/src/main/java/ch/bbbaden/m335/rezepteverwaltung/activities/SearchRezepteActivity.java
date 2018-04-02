@@ -56,7 +56,7 @@ public class SearchRezepteActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), RezeptActivity.class));
                     } else if (rezepte.size() > 1) {
                         DataHolder.getInstance().setRezepteListe(rezepte);
-                        new VariousMethods().goToNewActivity(RezepteListActivity.class, getApplicationContext());
+                        new VariousMethods().goToNewActivity(RezepteListActivity.class, SearchRezepteActivity.this);
                     } else {
                         new Toaster(getWindow().getDecorView().findViewById(android.R.id.content), "Keine der Suche entsprechenden Rezepte gefunden", -2);
 

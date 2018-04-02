@@ -49,7 +49,7 @@ public class RezepteListActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Rezept selectedRecipe = rezepte.get(position);
                         DataHolder.getInstance().setRezept(selectedRecipe);
-                        new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
+                        new VariousMethods().goToNewActivity(RezeptActivity.class, RezepteListActivity.this);
                     }
 
                 });

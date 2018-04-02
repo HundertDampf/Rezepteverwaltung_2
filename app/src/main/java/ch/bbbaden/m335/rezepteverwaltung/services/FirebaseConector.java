@@ -32,11 +32,11 @@ public class FirebaseConector {
         final List<Rezept> returnPrivateList = new ArrayList<>();
         final List<Rezept> returnPublicList = new ArrayList<>();
 
-        System.out.println("Benutzerliste grösse "+DataHolder.getInstance().getUserListe().size());
-        if (DataHolder.getInstance().getUserListe() != null) {
-            for (int i = 0; i < DataHolder.getInstance().getUserListe().size(); i++) {
-                if (DataHolder.getInstance().getUserListe().get(i).getUserLongId() != null) {
-                    mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(DataHolder.getInstance().getUserListe().get(i).getUserShortId()+"").addValueEventListener(new ValueEventListener() {
+        System.out.println("Benutzerliste grösse " + DatabaseConector.getUsers().size());
+        if (DatabaseConector.getUsers() != null) {
+            for (int i = 0; i < DatabaseConector.getUsers().size(); i++) {
+                if (DatabaseConector.getUsers().get(i).getUserLongId() != null) {
+                    mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(DatabaseConector.getUsers().get(i).getUserShortId() + "").addValueEventListener(new ValueEventListener() {
 
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
@@ -45,9 +45,9 @@ public class FirebaseConector {
                                 returnPublicList.add(noteDataSnapshot.getValue(Rezept.class));
                             }
 
-                            if(returnPublicList.size()>0){
+                            if (returnPublicList.size() > 0) {
                                 DatabaseConector.addRezepteFromFirebase(returnPublicList);
-                            }else{
+                            } else {
                                 System.out.println("nyet no new rezepete");
                             }
                         }
@@ -116,22 +116,16 @@ public class FirebaseConector {
     }
 
     public void getAllUsers() {
-        System.out.println(getClass().toString() + "getAllUsers");
-        System.out.println(MainActivity.context.getResources().getString(R.string.users));
         mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 System.out.println("From Firebase Users");
                 List<User> userList = new ArrayList<>();
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    User user = noteDataSnapshot.getValue(User.class);
-                    System.out.println("userMail " + user.getUserEmail());
-                    userList.add(user);
-                    System.out.println("1 returnList().size() =" + userList.size());
+                    userList.add(noteDataSnapshot.getValue(User.class));
                 }
-                DataHolder.getInstance().setUserListe(userList);
-                System.out.println("Dataholder");
-                new FirebaseConector().downloadAllRezepte(Long.toString(new User().getCurrentUser().getUserShortId()));
+                DatabaseConector.addUserFromFirebse(userList);
+                downloadAllRezepte(Long.toString(new User().getCurrentUser().getUserShortId()));
             }
 
             @Override
@@ -143,8 +137,8 @@ public class FirebaseConector {
         });
     }
 
-    public void addUserToFirebase(User user, String userId) {
-        mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).child(userId).setValue(user);
+    public void addUserToFirebase(User user) {
+        mDatabase.child(MainActivity.context.getResources().getString(R.string.users)).child(user.getUserLongId()).setValue(user);
         System.out.println("add user--------------------------------------------------");
     }
 

@@ -68,6 +68,22 @@ public class DatabaseConector {
         db.userDAO().insertAll(user);
         System.out.println("User added, DBConector");
     }
+    public static void addUser(List<User> users) {
+        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
+        User[] usersArray = new User[users.size()];
+        for (int i = 0; i < users.size(); i++) {
+            usersArray[i] = users.get(i);
+        }
+        db.userDAO().insertAll(usersArray);
+        System.out.println(usersArray.length + " Rezepte added, DBConector");
+    }
+
+    public static List<User> getUsers() {
+        final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
+        List<User> users = db.userDAO().getAllUser();
+        System.out.println(users.size() + " User fetched, DBConnector");
+        return users;
+    }
 
     public static void deleteUser(User user) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
@@ -76,7 +92,7 @@ public class DatabaseConector {
     }
 
     public static void addRezepteFromFirebase(List<Rezept> rezepteFromFirebase) {
-        List<Rezept> rezepteFromRoom = getRezepteByAuthor(new VariousMethods().getCurrentUserData().getUserName());
+        List<Rezept> rezepteFromRoom = getRezepte();
         List<Rezept> returnList = new ArrayList<>();
 
         System.out.println("rezeptefromFB size " + rezepteFromFirebase.size());
@@ -96,9 +112,40 @@ public class DatabaseConector {
             }
         }
 
-        if (returnList.size()> 0) {
+        if (returnList.size() > 0) {
             addRezepte(returnList);
         }
     }
 
+    public static void addUserFromFirebse(List<User> userFromFirebase) {
+        List<User> returnList = new ArrayList<>();
+        List<User> userFromRoomDB = getUsers();
+        if (userFromFirebase != null && userFromRoomDB != null) {
+            for (int i = 0; i < userFromFirebase.size(); i++) {
+                if(userFromFirebase.get(i).getUserLongId().contains("admin")){
+                    userFromFirebase.get(i).setUserEmail("nahanahahnahahnah"+userFromFirebase.get(i).getUserLongId());
+                    userFromFirebase.get(i).setUserName(userFromFirebase.get(i).getUserLongId());
+                }
+                boolean isInRoomDb = false;
+                System.out.println("FB loop " + i);
+                for (int j = 0; j < userFromRoomDB.size(); j++) {
+                    System.out.println(userFromFirebase.get(i).getUserLongId());
+                    System.out.println(userFromRoomDB.get(j).getUserLongId());
+                    if (userFromFirebase.get(i).getUserLongId().equals(userFromRoomDB.get(j).getUserLongId())) {
+                        isInRoomDb = true;
+                    }
+                }
+
+                if (!isInRoomDb) {
+                    returnList.add(userFromFirebase.get(i));
+                }
+            }
+
+            if (returnList.size() > 0) {
+                addUser(returnList);
+            }
+        }else if(userFromRoomDB==null){
+            addUser(userFromFirebase);
+        }
+    }
 }

@@ -3,6 +3,8 @@ package ch.bbbaden.m335.rezepteverwaltung.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.bbbaden.m335.rezepteverwaltung.R;
+import ch.bbbaden.m335.rezepteverwaltung.activities.SearchRezepteActivity;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 
 /**
@@ -24,9 +26,9 @@ public class SearchRezepte {
         authorRezepte = new ArrayList<>();
         zutatenRezepte = new ArrayList<>();
         try {
-            if (queryName != "") {
+            if (!queryName.equals("")||queryName.toLowerCase().equals("name")) {
                 for (int i = 0; i < alleRezepte.size(); i++) {
-                    if (alleRezepte.get(i).getRezeptName().contains(queryName)) {
+                    if (alleRezepte.get(i).getRezeptName().toLowerCase().contains(queryName.toLowerCase())) {
                         namenRezepte.add(alleRezepte.get(i));
                     }
                 }
@@ -34,9 +36,9 @@ public class SearchRezepte {
                 namenRezepte = alleRezepte;
             }
 
-            if (queryAuthor != "") {
+            if (!queryAuthor.equals("")||queryAuthor.toLowerCase().equals("author")) {
                 for (int i = 0; i < namenRezepte.size(); i++) {
-                    if (namenRezepte.get(i).getRezeptAuthor().contains(queryAuthor)) {
+                    if (namenRezepte.get(i).getRezeptAuthor().toLowerCase().contains(queryAuthor.toLowerCase())) {
                         authorRezepte.add(namenRezepte.get(i));
                     }
                 }

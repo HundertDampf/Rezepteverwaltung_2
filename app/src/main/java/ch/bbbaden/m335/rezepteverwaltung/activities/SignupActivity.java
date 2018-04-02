@@ -53,7 +53,6 @@ public class SignupActivity extends AppCompatActivity {
 
                 String email = editEmail.getText().toString().trim();
                 String password = editPassword.getText().toString().trim();
-                final String userName = editUserName.getText().toString();
 
                 if (TextUtils.isEmpty(email)) {
                     new Toaster(getApplicationContext(), "Enter email address!", 1);
@@ -62,6 +61,10 @@ public class SignupActivity extends AppCompatActivity {
 
                 if (TextUtils.isEmpty(password)) {
                     new Toaster(getApplicationContext(), "Enter password!", 1);
+                    return;
+                }
+                if (TextUtils.isEmpty(editUserName.getText().toString())) {
+                    new Toaster(getApplicationContext(), "Enter Username!", 1);
                     return;
                 }
 
@@ -99,20 +102,14 @@ public class SignupActivity extends AppCompatActivity {
 
     private void generateUser() {
         User user = new User();
-        List<User> users = new ArrayList<>();
-        FirebaseConector connect = new FirebaseConector();
-        System.out.println("vor assign");
-        users = DataHolder.getInstance().getUserListe();
-        System.out.println("nachher");
-
-        System.out.println("-" + (users.size() + 1));
-
-        user.setUserName(editUserName.getText().toString());
+        List<User> users = DatabaseConector.getUsers();
+        user.setUserName(editUserName.getText().toString().trim());
         user.setUserShortId((users.size() + 1));
-        user.setUserEmail(editEmail.getText().toString());
+        user.setUserLongId(auth.getUid());
+        user.setUserEmail(editEmail.getText().toString().trim());
         DatabaseConector.addUser(user);
         DataHolder.getInstance().setUser(user);
-        connect.addUserToFirebase(user, auth.getUid());
+        new FirebaseConector().addUserToFirebase(user);
     }
 
     @Override

@@ -38,8 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         context = this;
         auth = FirebaseAuth.getInstance();
-        FirebaseConector conector = new FirebaseConector();
-        conector.getAllUsers();
+
 
         btnEnter = findViewById(R.id.btnMainLogin);
         editMail = findViewById(R.id.editMainMail);
@@ -48,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btnMainSignUp);
 
         if (auth.getCurrentUser() != null) {
-            getUserFromFiles(auth.getUid());
+            //new FirebaseConector().getUserById(auth.getUid());
+            new FirebaseConector().getAllUsers();
             startActivity(new Intent(this, MenuActivity.class));
             finish();
         }
@@ -93,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
                                 new Toaster(getApplicationContext(), "Login Fehler", 1);
                             }
                         } else {
-                            getUserFromFiles(auth.getCurrentUser().getEmail());
+                            //new FirebaseConector().getUserById(auth.getUid());
+                            new FirebaseConector().getAllUsers();
                             startActivity(new Intent(context, MenuActivity.class));
                             finish();
                         }
@@ -102,12 +103,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-    }
-
-    private void getUserFromFiles(String userMail) {
-        new FirebaseConector().getUserById(auth.getUid());
-        //TODO Schauen wegen meheren Listener für User
 
     }
 }

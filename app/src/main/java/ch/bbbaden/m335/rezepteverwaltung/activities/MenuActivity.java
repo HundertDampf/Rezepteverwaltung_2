@@ -49,20 +49,20 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepte());
-                new VariousMethods().goToNewActivity(RezepteListActivity.class, getApplicationContext());
+                new VariousMethods().goToNewActivity(RezepteListActivity.class, MenuActivity.this);
             }
         });
 
         btnSuche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new VariousMethods().goToNewActivity(SearchRezepteActivity.class, getApplicationContext());
+                new VariousMethods().goToNewActivity(SearchRezepteActivity.class, MenuActivity.this );
             }
         });
         btnNeuesRezept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new VariousMethods().goToNewActivity(AddRezepteAuswahlActivity.class, getApplicationContext());
+                new VariousMethods().goToNewActivity(AddRezepteAuswahlActivity.class, MenuActivity.this);
             }
         });
         btnGluck.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +71,7 @@ public class MenuActivity extends AppCompatActivity {
                 Rezept random = getRandomRezept();
 
                 DataHolder.getInstance().setRezept(random);
-                new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
+                new VariousMethods().goToNewActivity(RezeptActivity.class, MenuActivity.this);
 
             }
         });
