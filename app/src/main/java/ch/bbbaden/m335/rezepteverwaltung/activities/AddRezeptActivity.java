@@ -10,6 +10,9 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
@@ -87,6 +90,17 @@ public class AddRezeptActivity extends AppCompatActivity {
         addRezept.setRezeptName(editTexts[0].getText().toString());
         addRezept.setRezeptDauer(editTexts[3].getText().toString());
         addRezept.setRezeptZubereitung(editTexts[1].getText().toString());
+
+        //TODO WIP ZUtaten
+        List<String> zutaten = new ArrayList<>();
+        zutaten.add("Zutat1 ");
+        zutaten.add("Zutat2");
+        zutaten.add("Zutat2");
+
+        String[] zutat={"zutat1","zutat2", "zutat3"};
+        System.out.println(zutat.toString());
+//        addRezept.setRezeptZutaten();
+
         isOnline();
         addRezept.setRezeptAuthor(new VariousMethods().getCurrentUserData().getUserName());
         addRezept.setRezeptId(new VariousMethods().generateRezeptId(addRezept));
@@ -101,10 +115,8 @@ public class AddRezeptActivity extends AppCompatActivity {
         }
         DataHolder.getInstance().setRezept(addRezept);
         rezeptAdded = true;   //TODO check if okay
-        new VariousMethods().goToNewActivity(RezeptActivity.class,getApplicationContext());
+        new VariousMethods().goToNewActivity(RezeptActivity.class, AddRezeptActivity.this);
     }
-
-
 
 
     public void isOnline() {

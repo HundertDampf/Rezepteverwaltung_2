@@ -41,7 +41,7 @@ public class AddRezepteAuswahlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getRadio();
-                new VariousMethods().goToNewActivity(AddRezeptActivity.class, getApplicationContext());
+                new VariousMethods().goToNewActivity(AddRezeptActivity.class, AddRezepteAuswahlActivity.this);
             }
         });
 

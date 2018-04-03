@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,9 +29,9 @@ public class Rezept {
     @Setter
     private String rezeptAuthor;
 
-//    @Getter
-//    @Setter
-//    private List<String>[] rezeptZutaten;
+    @Getter
+    @Setter
+    private String rezeptZutaten;
 
     @Getter
     @Setter
