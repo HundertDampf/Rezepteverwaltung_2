@@ -93,13 +93,13 @@ public class AddRezeptActivity extends AppCompatActivity {
 
         //TODO WIP ZUtaten
         List<String> zutaten = new ArrayList<>();
-        zutaten.add("Zutat1 ");
+        zutaten.add("Zutat1");
         zutaten.add("Zutat2");
         zutaten.add("Zutat2");
 
         String[] zutat={"zutat1","zutat2", "zutat3"};
         System.out.println(zutat.toString());
-//        addRezept.setRezeptZutaten();
+       addRezept.setRezeptZutaten(zutaten);
 
         isOnline();
         addRezept.setRezeptAuthor(new VariousMethods().getCurrentUserData().getUserName());

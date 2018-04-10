@@ -1,9 +1,14 @@
 package ch.bbbaden.m335.rezepteverwaltung.objects;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.database.Exclude;
+
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -31,7 +36,11 @@ public class Rezept {
 
     @Getter
     @Setter
-    private String rezeptZutaten;
+    private String rezeptZutatenString;
+
+    @Exclude
+    @Ignore
+    private List<String> rezeptZutaten;
 
     @Getter
     @Setter
@@ -60,6 +69,26 @@ public class Rezept {
         this.rezeptDauer = rezeptDauer;
         this.rezeptOnline = rezeptStatus;
         this.rezeptPublic = rezeptDbMethod;
+    }
+
+    public void setRezeptZutaten(List<String> zutaten) {
+        System.out.println("Setter Zutaten List Grösse: "+zutaten.size());
+        rezeptZutaten = zutaten;
+        String serializedZutaten = "";
+        for (int i = 0; i < zutaten.size(); i++) {
+            System.out.println("serializer loop EDFAGRREAAREDYGRAGZHXSDHT     "+i);
+            serializedZutaten += zutaten.get(i) + ",";
+        }
+        setRezeptZutatenString(serializedZutaten);
+    }
+
+    public List<String> getRezeptZutaten() {
+        rezeptZutaten = new ArrayList<>();
+        String[] zutatenArray = getRezeptZutatenString().split(",");
+        for (int i = 0; i < zutatenArray.length; i++) {
+            rezeptZutaten.add(zutatenArray[i]);
+        }
+        return rezeptZutaten;
     }
 }
 

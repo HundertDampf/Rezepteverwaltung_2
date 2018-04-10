@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Rezepteverwaltung V0.3</string>
+    <string name="app_name">Rezepteverwaltung V0.6</string>
     <string name="name">Name</string>
     <string name="rezeptName">Name</string>
     <string name="rezeptZubereitung">Zubereitung</string>

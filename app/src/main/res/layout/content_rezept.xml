@@ -22,6 +22,11 @@
             android:layout_margin="@dimen/text_margin"
             android:text="rezeptDauer" />
 
+        <ListView
+            android:id="@+id/listRezeptZutaten"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+
         <TextView
             android:id="@+id/viewRezeptZubereitung"
             android:layout_width="match_parent"

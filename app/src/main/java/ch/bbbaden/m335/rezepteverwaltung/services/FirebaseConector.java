@@ -15,6 +15,7 @@ import ch.bbbaden.m335.rezepteverwaltung.activities.MainActivity;
 import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
+import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 /**
  * Created by Noah on 02.03.2018.
@@ -111,7 +112,7 @@ public class FirebaseConector {
         if (rezept.isRezeptPublic()) {
             mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId())).child(rezept.getRezeptId()).setValue(rezept);
         } else {
-            mDatabase.child(MainActivity.context.getResources().getString(R.string.dbprivate)).child(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId())).child(rezept.getRezeptId()).setValue(rezept); //TODO User Name in DB name einfügen
+            mDatabase.child(MainActivity.context.getResources().getString(R.string.dbprivate)).child(Long.toString(new VariousMethods().getCurrentUserData().getUserShortId())).child(rezept.getRezeptId()).setValue(rezept);
         }
     }
 
