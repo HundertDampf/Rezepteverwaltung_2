@@ -1,6 +1,5 @@
 package ch.bbbaden.m335.rezepteverwaltung.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,13 +10,13 @@ import android.widget.ListView;
 import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
-public class RezepteListActivity extends AppCompatActivity {
-    List<Rezept> rezepte;
+public class RecipeListActivity extends AppCompatActivity {
+    List<Recipe> rezepte;
     ListView listView;
 
     @Override
@@ -29,15 +28,15 @@ public class RezepteListActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         if (rezepte != null) {
             if (rezepte.size() == 1) {
-                DataHolder.getInstance().setRezept(rezepte.get(0));
-                new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
+                DataHolder.getInstance().setRecipe(rezepte.get(0));
+                new VariousMethods().goToNewActivity(RecipeActivity.class, getApplicationContext());
 
             } else if (rezepte.size() > 1) {
                 String[] listItems = new String[rezepte.size()];
 
                 for (int i = 0; i < rezepte.size(); i++) {
-                    Rezept recipe = rezepte.get(i);
-                    listItems[i] = recipe.getRezeptName();
+                    Recipe recipe = rezepte.get(i);
+                    listItems[i] = recipe.getRecipeName();
                 }
 
                 ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listItems);
@@ -47,9 +46,9 @@ public class RezepteListActivity extends AppCompatActivity {
 
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Rezept selectedRecipe = rezepte.get(position);
-                        DataHolder.getInstance().setRezept(selectedRecipe);
-                        new VariousMethods().goToNewActivity(RezeptActivity.class, RezepteListActivity.this);
+                        Recipe selectedRecipe = rezepte.get(position);
+                        DataHolder.getInstance().setRecipe(selectedRecipe);
+                        new VariousMethods().goToNewActivity(RecipeActivity.class, RecipeListActivity.this);
                     }
 
                 });

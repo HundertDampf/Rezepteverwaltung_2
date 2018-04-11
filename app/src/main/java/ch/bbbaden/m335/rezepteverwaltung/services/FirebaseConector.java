@@ -12,7 +12,7 @@ import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
 import ch.bbbaden.m335.rezepteverwaltung.activities.MainActivity;
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
@@ -29,9 +29,9 @@ public class FirebaseConector {
         System.out.println("FirebaseConector Constructor--------------------");
     }
 
-    public List<Rezept> downloadAllRezepte(String userId) {
-        final List<Rezept> returnPrivateList = new ArrayList<>();
-        final List<Rezept> returnPublicList = new ArrayList<>();
+    public List<Recipe> downloadAllRezepte(String userId) {
+        final List<Recipe> returnPrivateList = new ArrayList<>();
+        final List<Recipe> returnPublicList = new ArrayList<>();
 
         System.out.println("Benutzerliste grösse " + DatabaseConector.getUsers().size());
         if (DatabaseConector.getUsers() != null) {
@@ -43,7 +43,7 @@ public class FirebaseConector {
                         public void onDataChange(DataSnapshot snapshot) {
                             for (DataSnapshot noteDataSnapshot : snapshot.getChildren()) {
                                 System.out.println("public datachange");
-                                returnPublicList.add(noteDataSnapshot.getValue(Rezept.class));
+                                returnPublicList.add(noteDataSnapshot.getValue(Recipe.class));
                             }
 
                             if (returnPublicList.size() > 0) {
@@ -70,7 +70,7 @@ public class FirebaseConector {
                 System.out.println("From Firebase rezepte private");
                 int i = 1;
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    returnPrivateList.add(noteDataSnapshot.getValue(Rezept.class));
+                    returnPrivateList.add(noteDataSnapshot.getValue(Recipe.class));
                     System.out.println("Loopdelilooplooop private #" + i);
                     i += 1;
                 }
@@ -86,8 +86,8 @@ public class FirebaseConector {
         return DataHolder.getInstance().getRezepteListe();
     }
 
-    public List<Rezept> downloadAllFromUser(int userId) {
-        final List<Rezept> returnList = new ArrayList<>();
+    public List<Recipe> downloadAllFromUser(int userId) {
+        final List<Recipe> returnList = new ArrayList<>();
         mDatabase.child("publicRezepte").child("" + userId).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -95,7 +95,7 @@ public class FirebaseConector {
                 System.out.println("From Firebase");
 
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    returnList.add(noteDataSnapshot.getValue(Rezept.class));
+                    returnList.add(noteDataSnapshot.getValue(Recipe.class));
                 }
                 DataHolder.getInstance().setRezepteListe(returnList);
             }
@@ -108,11 +108,11 @@ public class FirebaseConector {
         return DataHolder.getInstance().getRezepteListe();
     }
 
-    public void addRezeptToFirebase(Rezept rezept) {
-        if (rezept.isRezeptPublic()) {
-            mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId())).child(rezept.getRezeptId()).setValue(rezept);
+    public void addRezeptToFirebase(Recipe recipe) {
+        if (recipe.isRecipeIsPublic()) {
+            mDatabase.child(MainActivity.context.getResources().getString(R.string.dbpublic)).child(Long.toString(DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail()).getUserShortId())).child(recipe.getRecipeId()).setValue(recipe);
         } else {
-            mDatabase.child(MainActivity.context.getResources().getString(R.string.dbprivate)).child(Long.toString(new VariousMethods().getCurrentUserData().getUserShortId())).child(rezept.getRezeptId()).setValue(rezept);
+            mDatabase.child(MainActivity.context.getResources().getString(R.string.dbprivate)).child(Long.toString(new VariousMethods().getCurrentUserData().getUserShortId())).child(recipe.getRecipeId()).setValue(recipe);
         }
     }
 

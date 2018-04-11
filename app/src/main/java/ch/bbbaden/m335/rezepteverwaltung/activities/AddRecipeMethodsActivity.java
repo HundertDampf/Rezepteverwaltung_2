@@ -18,7 +18,7 @@ import ch.bbbaden.m335.rezepteverwaltung.services.barcode.BarcodeCaptureActivity
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
-public class AddRezepteAuswahlActivity extends AppCompatActivity {
+public class AddRecipeMethodsActivity extends AppCompatActivity {
 
     Button btnQr;
     Button btnManuel;
@@ -41,7 +41,7 @@ public class AddRezepteAuswahlActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getRadio();
-                new VariousMethods().goToNewActivity(AddRezeptActivity.class, AddRezepteAuswahlActivity.this);
+                new VariousMethods().goToNewActivity(AddRecipeActivity.class, AddRecipeMethodsActivity.this);
             }
         });
 
@@ -77,8 +77,8 @@ public class AddRezepteAuswahlActivity extends AppCompatActivity {
                     Point[] p = barcode.cornerPoints;
                     String qrResultat = barcode.displayValue;
                     System.out.println("QR Code        " + barcode.displayValue);
-                    DataHolder.getInstance().setRezept(new QRCode().interpretQr(qrResultat));
-                    new VariousMethods().goToNewActivity(RezeptActivity.class, getApplicationContext());
+                    DataHolder.getInstance().setRecipe(new QRCode().interpretQr(qrResultat));
+                    new VariousMethods().goToNewActivity(RecipeActivity.class, getApplicationContext());
 
                 } else {
 //                    mResultTextView.setText(R.string.no_barcode_captured);

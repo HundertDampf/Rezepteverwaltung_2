@@ -1,6 +1,5 @@
 package ch.bbbaden.m335.rezepteverwaltung.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
@@ -8,22 +7,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.*;
 
-public class AddRezeptActivity extends AppCompatActivity {
+public class AddRecipeActivity extends AppCompatActivity {
 
     Button btnAdd;
     EditText[] editTexts;
-    Rezept addRezept;
+    Recipe addRecipe;
 
     private boolean rezeptAdded = false;
 
@@ -33,7 +30,7 @@ public class AddRezeptActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_rezept);
 
         int[] editTextsIds = {R.id.editAddRezeptName, R.id.editAddZubereitung, R.id.editAddZutat, R.id.editAddDauer};
-        final String[] editTextsStrings = {getResources().getString(R.string.rezeptName), getResources().getString(R.string.rezeptZubereitung), getResources().getString(R.string.rezeptZutaten), getResources().getString(R.string.rezeptDauer)};
+        final String[] editTextsStrings = {getResources().getString(R.string.recipeName), getResources().getString(R.string.recipeIngredients), getResources().getString(R.string.recipeIngredients), getResources().getString(R.string.recipeDuration)};
 
 
         editTexts = new EditText[4];
@@ -86,10 +83,10 @@ public class AddRezeptActivity extends AppCompatActivity {
 
     public void saveRezept() {
         System.out.println("SafeRezept methode started");
-        addRezept = new Rezept();
-        addRezept.setRezeptName(editTexts[0].getText().toString());
-        addRezept.setRezeptDauer(editTexts[3].getText().toString());
-        addRezept.setRezeptZubereitung(editTexts[1].getText().toString());
+        addRecipe = new Recipe();
+        addRecipe.setRecipeName(editTexts[0].getText().toString());
+        addRecipe.setRecipeDuration(editTexts[3].getText().toString());
+        addRecipe.setRecipeInstructions(editTexts[1].getText().toString());
 
         //TODO WIP ZUtaten
         List<String> zutaten = new ArrayList<>();
@@ -99,35 +96,35 @@ public class AddRezeptActivity extends AppCompatActivity {
 
         String[] zutat={"zutat1","zutat2", "zutat3"};
         System.out.println(zutat.toString());
-       addRezept.setRezeptZutaten(zutaten);
+       addRecipe.setRecipeIngredientsAsList(zutaten);
 
         isOnline();
-        addRezept.setRezeptAuthor(new VariousMethods().getCurrentUserData().getUserName());
-        addRezept.setRezeptId(new VariousMethods().generateRezeptId(addRezept));
+        addRecipe.setRecipeAuthor(new VariousMethods().getCurrentUserData().getUserName());
+        addRecipe.setRecipeId(new VariousMethods().generateRezeptId(addRecipe));
 
-        System.out.println("SaveRezept() " + addRezept.getRezeptId());
+        System.out.println("SaveRezept() " + addRecipe.getRecipeId());
 
-        if (addRezept.isRezeptOnline()) {
-            new FirebaseConector().addRezeptToFirebase(addRezept);
-            DatabaseConector.addRezept(addRezept);
+        if (addRecipe.isRecipeIsOnline()) {
+            new FirebaseConector().addRezeptToFirebase(addRecipe);
+            DatabaseConector.addRezept(addRecipe);
         } else {
-            DatabaseConector.addRezept(addRezept);
+            DatabaseConector.addRezept(addRecipe);
         }
-        DataHolder.getInstance().setRezept(addRezept);
+        DataHolder.getInstance().setRecipe(addRecipe);
         rezeptAdded = true;   //TODO check if okay
-        new VariousMethods().goToNewActivity(RezeptActivity.class, AddRezeptActivity.this);
+        new VariousMethods().goToNewActivity(RecipeActivity.class, AddRecipeActivity.this);
     }
 
 
     public void isOnline() {
         if (DataHolder.getInstance().getSaveId() == 1) {
-            addRezept.setRezeptOnline(false);
+            addRecipe.setRecipeIsOnline(false);
         } else if (DataHolder.getInstance().getSaveId() == 2) {
-            addRezept.setRezeptOnline(true);
-            addRezept.setRezeptPublic(false);
+            addRecipe.setRecipeIsOnline(true);
+            addRecipe.setRecipeIsPublic(false);
         } else if (DataHolder.getInstance().getSaveId() == 3) {
-            addRezept.setRezeptOnline(true);
-            addRezept.setRezeptPublic(true);
+            addRecipe.setRecipeIsOnline(true);
+            addRecipe.setRecipeIsPublic(true);
         }
     }
 

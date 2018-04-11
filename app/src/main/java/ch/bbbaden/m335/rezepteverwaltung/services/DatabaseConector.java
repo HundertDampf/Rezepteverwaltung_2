@@ -1,14 +1,11 @@
 package ch.bbbaden.m335.rezepteverwaltung.services;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.bbbaden.m335.rezepteverwaltung.activities.MainActivity;
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
-import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 /**
  * Created by Noah on 07.03.2018.
@@ -16,45 +13,45 @@ import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 public class DatabaseConector {
 
-    public static void addRezepte(List<Rezept> rezepte) {
+    public static void addRezepte(List<Recipe> rezepte) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        Rezept[] rezepteArray = new Rezept[rezepte.size()];
+        Recipe[] rezepteArray = new Recipe[rezepte.size()];
         for (int i = 0; i < rezepte.size(); i++) {
             rezepteArray[i] = rezepte.get(i);
         }
-        db.rezeptDAO().insertAll(rezepteArray);
+        db.recipeDAO().insertAll(rezepteArray);
         System.out.println(rezepteArray.length + " Rezepte added, DBConector");
     }
 
-    public static void addRezept(Rezept rezept) {
+    public static void addRezept(Recipe recipe) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        db.rezeptDAO().insertAll(rezept);
-        System.out.println("Rezept added, DBConector");
+        db.recipeDAO().insertAll(recipe);
+        System.out.println("Recipe added, DBConector");
     }
 
-    public static List<Rezept> getRezepte() {
+    public static List<Recipe> getRezepte() {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        List<Rezept> rezepts = db.rezeptDAO().getAllRezepte();
-        System.out.println(rezepts.size() + " Reazepte fetched, DBConnector");
-        return rezepts;
+        List<Recipe> recipes = db.recipeDAO().getAllRecipes();
+        System.out.println(recipes.size() + " Reazepte fetched, DBConnector");
+        return recipes;
     }
 
     public static void deleteRezepte() {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        db.rezeptDAO().deleteAll();
-        System.out.println("Rezept deleted, DBConnector");
+        db.recipeDAO().deleteAll();
+        System.out.println("Recipe deleted, DBConnector");
     }
 
-    public static Rezept getRezepteById(String id) {
+    public static Recipe getRezepteById(String id) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        System.out.println("Rezept fetched, DBConnector");
-        return db.rezeptDAO().loadAllRezepteByIds(Integer.parseInt(id));
+        System.out.println("Recipe fetched, DBConnector");
+        return db.recipeDAO().loadAllRecipesByIds(Integer.parseInt(id));
     }
 
-    public static List<Rezept> getRezepteByAuthor(String author) {
+    public static List<Recipe> getRezepteByAuthor(String author) {
         final AppDatabase db = (AppDatabase.getAppDatabase(MainActivity.context));
-        System.out.println("Rezept fetched, DBConnector");
-        return db.rezeptDAO().findByRezepteAuthor(author);
+        System.out.println("Recipe fetched, DBConnector");
+        return db.recipeDAO().findRecipeByAuthor(author);
     }
 
     public static User getUserByMail(String userMail) {
@@ -91,9 +88,9 @@ public class DatabaseConector {
         System.out.println("User deleted, DBConnector");
     }
 
-    public static void addRezepteFromFirebase(List<Rezept> rezepteFromFirebase) {
-        List<Rezept> rezepteFromRoom = getRezepte();
-        List<Rezept> returnList = new ArrayList<>();
+    public static void addRezepteFromFirebase(List<Recipe> rezepteFromFirebase) {
+        List<Recipe> rezepteFromRoom = getRezepte();
+        List<Recipe> returnList = new ArrayList<>();
 
         System.out.println("rezeptefromFB size " + rezepteFromFirebase.size());
         System.out.println("rezeptefromroom size " + rezepteFromRoom.size());
@@ -102,7 +99,7 @@ public class DatabaseConector {
             boolean isInRoomDb = false;
             System.out.println("FB loop " + i);
             for (int j = 0; j < rezepteFromRoom.size(); j++) {
-                if (rezepteFromFirebase.get(i).getRezeptId().equals(rezepteFromRoom.get(j).getRezeptId())) {
+                if (rezepteFromFirebase.get(i).getRecipeId().equals(rezepteFromRoom.get(j).getRecipeId())) {
                     isInRoomDb = true;
                 }
             }

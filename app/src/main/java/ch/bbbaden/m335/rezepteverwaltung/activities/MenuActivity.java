@@ -9,17 +9,15 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
-import ch.bbbaden.m335.rezepteverwaltung.objects.User;
-import ch.bbbaden.m335.rezepteverwaltung.services.AppDatabase;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.services.FirebaseConector;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
-import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 public class MenuActivity extends AppCompatActivity {
@@ -49,29 +47,29 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DataHolder.getInstance().setRezepteListe(DatabaseConector.getRezepte());
-                new VariousMethods().goToNewActivity(RezepteListActivity.class, MenuActivity.this);
+                new VariousMethods().goToNewActivity(RecipeListActivity.class, MenuActivity.this);
             }
         });
 
         btnSuche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new VariousMethods().goToNewActivity(SearchRezepteActivity.class, MenuActivity.this );
+                new VariousMethods().goToNewActivity(SearchRecipesActivity.class, MenuActivity.this);
             }
         });
         btnNeuesRezept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new VariousMethods().goToNewActivity(AddRezepteAuswahlActivity.class, MenuActivity.this);
+                new VariousMethods().goToNewActivity(AddRecipeMethodsActivity.class, MenuActivity.this);
             }
         });
         btnGluck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Rezept random = getRandomRezept();
+                Recipe random = getRandomRezept();
 
-                DataHolder.getInstance().setRezept(random);
-                new VariousMethods().goToNewActivity(RezeptActivity.class, MenuActivity.this);
+                DataHolder.getInstance().setRecipe(random);
+                new VariousMethods().goToNewActivity(RecipeActivity.class, MenuActivity.this);
 
             }
         });
@@ -105,41 +103,46 @@ public class MenuActivity extends AppCompatActivity {
     public void fillDB() {
         DatabaseConector.deleteRezepte();
         for (int i = 0; i < 15; i++) {
-            Rezept fillRezept = new Rezept();
+            Recipe fillRecipe = new Recipe();
 
-            fillRezept.setRezeptAuthor(DatabaseConector.getUserByMail(auth.getCurrentUser().getEmail()).getUserName());
-            fillRezept.setRezeptZubereitung("Author: " + fillRezept.getRezeptAuthor() + " Zubereitung " + i + " " + getResources().getString(R.string.large_text));
+            fillRecipe.setRecipeAuthor(DatabaseConector.getUserByMail(auth.getCurrentUser().getEmail()).getUserName());
+            fillRecipe.setRecipeInstructions("Author: " + fillRecipe.getRecipeAuthor() + " Zubereitung " + i + " " + getResources().getString(R.string.large_text));
 
             if (i < 5) {
-                fillRezept.setRezeptName("Rezept lokal" + " " + i + fillRezept.getRezeptAuthor());
-                fillRezept.setRezeptOnline(false);
+                fillRecipe.setRecipeName("Recipe lokal" + " " + i + fillRecipe.getRecipeAuthor());
+                fillRecipe.setRecipeIsOnline(false);
             } else {
                 if (i < 10) {
-                    fillRezept.setRezeptName("Rezept public" + i + " " + fillRezept.getRezeptAuthor());
-                    fillRezept.setRezeptOnline(true);
-                    fillRezept.setRezeptPublic(false);
+                    fillRecipe.setRecipeName("Recipe public" + i + " " + fillRecipe.getRecipeAuthor());
+                    fillRecipe.setRecipeIsOnline(true);
+                    fillRecipe.setRecipeIsPublic(false);
                 } else {
-                    fillRezept.setRezeptName("Rezept private" + i + " " + fillRezept.getRezeptAuthor());
-                    fillRezept.setRezeptOnline(true);
-                    fillRezept.setRezeptPublic(true);
+                    fillRecipe.setRecipeName("Recipe private" + i + " " + fillRecipe.getRecipeAuthor());
+                    fillRecipe.setRecipeIsOnline(true);
+                    fillRecipe.setRecipeIsPublic(true);
                 }
             }
-            fillRezept.setRezeptId(new VariousMethods().generateRezeptId((fillRezept)));
+            fillRecipe.setRecipeId(new VariousMethods().generateRezeptId((fillRecipe)));
 
-            if (fillRezept.isRezeptOnline()) {
-                new FirebaseConector().addRezeptToFirebase(fillRezept);
-                DatabaseConector.addRezept(fillRezept);
-            } else {
-                DatabaseConector.addRezept(fillRezept);
+            List<String> zutaten = new ArrayList<>();
+            for (int j = 0; j < 4; j++) {
+                zutaten.add(i * 11 + "" + i * 11);
             }
-            DataHolder.getInstance().setRezept(fillRezept);
+            fillRecipe.setRecipeIngredientsAsList(zutaten);
+            if (fillRecipe.isRecipeIsOnline()) {
+                new FirebaseConector().addRezeptToFirebase(fillRecipe);
+                DatabaseConector.addRezept(fillRecipe);
+            } else {
+                DatabaseConector.addRezept(fillRecipe);
+            }
+            DataHolder.getInstance().setRecipe(fillRecipe);
 
         }
 
     }
 
-    public Rezept getRandomRezept() {
-        List<Rezept> rezepte = DatabaseConector.getRezepte();
+    public Recipe getRandomRezept() {
+        List<Recipe> rezepte = DatabaseConector.getRezepte();
         Random rand = new Random();
         return rezepte.get(rand.nextInt(rezepte.size()));
     }

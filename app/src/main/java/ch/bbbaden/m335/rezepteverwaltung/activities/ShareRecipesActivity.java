@@ -11,25 +11,25 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
 
-public class ShareRezepteActivity extends AppCompatActivity {
+public class ShareRecipesActivity extends AppCompatActivity {
     ImageView imageQr;
     public final static int QRcodeWidth = 500;
     Bitmap bitmap;
-    Rezept rezeptToShare;
+    Recipe recipeToShare;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_rezept);
 
-        rezeptToShare = DataHolder.getInstance().getRezept();
+        recipeToShare = DataHolder.getInstance().getRecipe();
         imageQr = findViewById(R.id.imageShareQr);
 
         try {
-            bitmap = textToImageEncode("Firebase1Rezepteverwaltung31415%" + rezeptToShare.getRezeptId() + "%" + rezeptToShare.getRezeptName());
+            bitmap = textToImageEncode("Firebase1Rezepteverwaltung31415%" + recipeToShare.getRecipeId() + "%" + recipeToShare.getRecipeName());
 
             imageQr.setImageBitmap(bitmap);
 

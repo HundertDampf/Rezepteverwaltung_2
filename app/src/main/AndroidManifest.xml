@@ -23,22 +23,22 @@
         </activity>
         <activity android:name=".activities.MenuActivity" />
         <activity
-            android:name=".activities.RezepteListActivity"
+            android:name=".activities.RecipeListActivity"
             android:parentActivityName=".activities.MenuActivity" />
         <activity
-            android:name=".activities.SearchRezepteActivity"
+            android:name=".activities.SearchRecipesActivity"
             android:parentActivityName=".activities.MenuActivity" />
         <activity
-            android:name=".activities.ShareRezepteActivity"
+            android:name=".activities.ShareRecipesActivity"
             android:parentActivityName=".activities.MenuActivity" />
         <activity
-            android:name=".activities.AddRezeptActivity"
+            android:name=".activities.AddRecipeActivity"
             android:parentActivityName=".activities.MenuActivity" />
         <activity
-            android:name=".activities.AddRezepteAuswahlActivity"
+            android:name=".activities.AddRecipeMethodsActivity"
             android:parentActivityName=".activities.MenuActivity" />
         <activity
-            android:name=".activities.RezeptActivity"
+            android:name=".activities.RecipeActivity"
             android:label="@string/title_activity_rezept"
             android:parentActivityName=".activities.MenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />

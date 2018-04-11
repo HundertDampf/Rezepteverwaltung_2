@@ -7,7 +7,6 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 
 /**

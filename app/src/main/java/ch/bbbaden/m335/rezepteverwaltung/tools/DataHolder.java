@@ -2,7 +2,7 @@ package ch.bbbaden.m335.rezepteverwaltung.tools;
 
 import java.util.List;
 
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,11 +14,11 @@ import lombok.Setter;
 public class DataHolder {
     @Setter
     @Getter
-    private Rezept rezept;
+    private Recipe recipe;
 
     @Setter
     @Getter
-    private List<Rezept> rezepteListe;
+    private List<Recipe> rezepteListe;
 
     @Setter
     @Getter

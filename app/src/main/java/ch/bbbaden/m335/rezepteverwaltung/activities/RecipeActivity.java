@@ -11,11 +11,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.tools.*;
 
-public class RezeptActivity extends AppCompatActivity {
-    Rezept rezeptToShow;
+public class RecipeActivity extends AppCompatActivity {
+    Recipe recipeToShow;
 
     ListView listZutaten;
     TextView viewDauer;
@@ -29,7 +29,7 @@ public class RezeptActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        rezeptToShow = DataHolder.getInstance().getRezept();
+        recipeToShow = DataHolder.getInstance().getRecipe();
         viewDauer = findViewById(R.id.viewRezeptDauer);
         viewZubereitung = findViewById(R.id.viewRezeptZubereitung);
         listZutaten = findViewById(R.id.listRezeptZutaten);
@@ -38,23 +38,23 @@ public class RezeptActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), ShareRezepteActivity.class));
+                startActivity(new Intent(getApplicationContext(), ShareRecipesActivity.class));
             }
         });
 
-        if (rezeptToShow.getRezeptName() != null) {
-            setTitle(rezeptToShow.getRezeptName());
+        if (recipeToShow.getRecipeName() != null) {
+            setTitle(recipeToShow.getRecipeName());
         } else {
             setTitle("undefined");
         }
         String[] zutatenListItems;
-        if (rezeptToShow.getRezeptZutatenString() != null) {
-            System.out.println("Size rezeptToShow.getRezeptZutaten====================== " + rezeptToShow.getRezeptZutaten().size());
-            zutatenListItems= new String[rezeptToShow.getRezeptZutaten().size()];
+        if (recipeToShow.getRecipeIngredientsAsString() != null) {
+            System.out.println("Size recipeToShow.getRecipeIngredientsAsList====================== " + recipeToShow.getRecipeIngredientsAsList().size());
+            zutatenListItems= new String[recipeToShow.getRecipeIngredientsAsList().size()];
 
-            for (int i = 0; i < rezeptToShow.getRezeptZutaten().size(); i++) {
+            for (int i = 0; i < recipeToShow.getRecipeIngredientsAsList().size(); i++) {
                 System.out.println("getZutaten loop " + i);
-                zutatenListItems[i] = rezeptToShow.getRezeptZutaten().get(i);
+                zutatenListItems[i] = recipeToShow.getRecipeIngredientsAsList().get(i);
                 System.out.println(zutatenListItems[i]);
             }
         }else{
@@ -64,19 +64,19 @@ public class RezeptActivity extends AppCompatActivity {
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, zutatenListItems);
         listZutaten.setAdapter(adapter);
 
-        if(rezeptToShow.getRezeptDauer()!=null) {
-            viewDauer.setText(rezeptToShow.getRezeptDauer());
+        if(recipeToShow.getRecipeDuration()!=null) {
+            viewDauer.setText(recipeToShow.getRecipeDuration());
         }else{
             viewDauer.setText("undefined");
         }
 
-        if(rezeptToShow.getRezeptZubereitung()!=null) {
-            viewZubereitung.setText(rezeptToShow.getRezeptZubereitung());
+        if(recipeToShow.getRecipeInstructions()!=null) {
+            viewZubereitung.setText(recipeToShow.getRecipeInstructions());
         }else{
             viewZubereitung.setText("undefined");
         }
 
-        new Toaster(getApplicationContext(), rezeptToShow.getRezeptId() + " rezeptID", 1);
+        new Toaster(getApplicationContext(), recipeToShow.getRecipeId() + " rezeptID", 1);
 
     }
 }

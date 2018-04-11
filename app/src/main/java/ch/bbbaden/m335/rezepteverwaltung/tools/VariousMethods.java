@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import ch.bbbaden.m335.rezepteverwaltung.objects.Rezept;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.objects.User;
 import ch.bbbaden.m335.rezepteverwaltung.services.DatabaseConector;
 
@@ -16,12 +16,12 @@ public class VariousMethods {
         return DatabaseConector.getUserByMail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
     }
 
-    static public String generateRezeptId(Rezept rezept) {
+    static public String generateRezeptId(Recipe recipe) {
         String returnId;
         String userId = new VariousMethods().getCurrentUserData().getUserShortId() + "";
 
-        if (rezept.isRezeptOnline()) {
-            if (rezept.isRezeptPublic()) {
+        if (recipe.isRecipeIsOnline()) {
+            if (recipe.isRecipeIsPublic()) {
                 returnId = "10";
             } else {
                 returnId = "20";
