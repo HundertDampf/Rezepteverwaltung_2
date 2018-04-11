@@ -22,6 +22,7 @@ public class SearchRezepteActivity extends AppCompatActivity {
     Button btnSearch;
     EditText editName;
     EditText editAuthor;
+    EditText editZutaten;
 
     String queryName;
     String queryAuthor;
@@ -34,9 +35,8 @@ public class SearchRezepteActivity extends AppCompatActivity {
 
         editName = findViewById(R.id.editSuchName);
         editAuthor = findViewById(R.id.editSuchAuthor);
+        editZutaten = findViewById(R.id.editSuchZutaten);
         btnSearch = findViewById(R.id.btnSearch);
-
-        queryZutaten = new ArrayList<>();
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,8 +44,19 @@ public class SearchRezepteActivity extends AppCompatActivity {
                 queryName = editName.getText().toString();
                 queryAuthor = editAuthor.getText().toString();
 
-                List<Rezept> rezepte = new SearchRezepte().doSearch(queryName, queryAuthor, queryZutaten);
+                queryZutaten = new ArrayList<>();
+                System.out.println("queryzutatent " + editAuthor.getText().toString());
+                String[] queryZutatenArray = editZutaten.getText().toString().split(",");
+                System.out.println("lenght queryZutatenArray " + queryZutatenArray.length);
 
+                for (int i = 0; i < queryZutatenArray.length; i++) {
+                    System.out.println("array " + queryZutatenArray[i]);
+                    queryZutaten.add(queryZutatenArray[i].trim());
+                    System.out.println(queryZutaten.get(i));
+                }
+
+                List<Rezept> rezepte = new SearchRezepte().doSearch(queryName, queryAuthor, queryZutaten);
+                queryZutaten = null;
                 for (int i = 0; i < rezepte.size(); i++) {
                     System.out.println(rezepte.get(i).getRezeptName());
                     System.out.println(rezepte.get(i).getRezeptZubereitung());

@@ -72,21 +72,25 @@ public class Rezept {
     }
 
     public void setRezeptZutaten(List<String> zutaten) {
-        System.out.println("Setter Zutaten List Grösse: "+zutaten.size());
+        System.out.println("Setter Zutaten List Grösse: " + zutaten.size());
         rezeptZutaten = zutaten;
         String serializedZutaten = "";
         for (int i = 0; i < zutaten.size(); i++) {
-            System.out.println("serializer loop EDFAGRREAAREDYGRAGZHXSDHT     "+i);
+            System.out.println("serializer loop EDFAGRREAAREDYGRAGZHXSDHT     " + i);
             serializedZutaten += zutaten.get(i) + ",";
         }
         setRezeptZutatenString(serializedZutaten);
     }
 
     public List<String> getRezeptZutaten() {
-        rezeptZutaten = new ArrayList<>();
-        String[] zutatenArray = getRezeptZutatenString().split(",");
-        for (int i = 0; i < zutatenArray.length; i++) {
-            rezeptZutaten.add(zutatenArray[i]);
+        if (rezeptZutaten == null) {
+            if (getRezeptZutatenString() != null || getRezeptZutatenString() == "") {
+                rezeptZutaten = new ArrayList<>();
+                String[] zutatenArray = getRezeptZutatenString().split(",");
+                for (int i = 0; i < zutatenArray.length; i++) {
+                    rezeptZutaten.add(zutatenArray[i]);
+                }
+            }
         }
         return rezeptZutaten;
     }
