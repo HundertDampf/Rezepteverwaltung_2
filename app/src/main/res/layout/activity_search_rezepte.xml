@@ -63,4 +63,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSuchName" />
 
+    <ImageButton
+        android:id="@+id/btnSearchVoiceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/editSuchName"
+        app:srcCompat="@drawable/ic_audiotrack_light"
+        tools:layout_editor_absoluteX="320dp" />
+
 </android.support.constraint.ConstraintLayout>

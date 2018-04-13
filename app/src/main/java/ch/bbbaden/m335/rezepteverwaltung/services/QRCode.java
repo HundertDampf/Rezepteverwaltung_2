@@ -7,15 +7,18 @@ import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
  */
 
 public class QRCode {
-    public Recipe interpretQr(String qrResult) {
-        Recipe tempReturnRecipe = new Recipe();
-        //  tempReturnRecipe.setRecipeId(AppDatabase.getAppDatabase(MainActivity.context).recipeDAO().getAllRecipes().size() + 1);
-        tempReturnRecipe.setRecipeName("QR Scaner comming soon");
-        tempReturnRecipe.setRecipeInstructions(qrResult);
-        tempReturnRecipe.setRecipeDuration("Soon(tm)");
+    Recipe returnRecipe;
 
+    public Recipe interpretQr(String qrResultAsString) {
+        if (qrResultAsString.contains("Firebase1Rezepteverwaltung31415%")) {
+            String[] qrResultAsArray = qrResultAsString.split("%");
+            returnRecipe = DatabaseConector.getRezepteById(qrResultAsArray[1]);
+            for (int i = 0; i < qrResultAsArray.length; i++) {
+                System.out.println(qrResultAsArray[i]);
+            }
+        }
 
-        return tempReturnRecipe;
+        return returnRecipe;
     }
 
 

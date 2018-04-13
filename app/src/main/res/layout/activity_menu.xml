@@ -55,7 +55,7 @@
         android:layout_width="233dp"
         android:layout_height="51dp"
         android:layout_marginTop="28dp"
-        android:text="Back Up"
+        android:text="Test Rezepte Generieren"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

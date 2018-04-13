@@ -13,9 +13,11 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import ch.bbbaden.m335.rezepteverwaltung.R;
+import ch.bbbaden.m335.rezepteverwaltung.objects.Recipe;
 import ch.bbbaden.m335.rezepteverwaltung.services.QRCode;
 import ch.bbbaden.m335.rezepteverwaltung.services.barcode.BarcodeCaptureActivity;
 import ch.bbbaden.m335.rezepteverwaltung.tools.DataHolder;
+import ch.bbbaden.m335.rezepteverwaltung.tools.Toaster;
 import ch.bbbaden.m335.rezepteverwaltung.tools.VariousMethods;
 
 public class AddRecipeMethodsActivity extends AppCompatActivity {
@@ -77,8 +79,14 @@ public class AddRecipeMethodsActivity extends AppCompatActivity {
                     Point[] p = barcode.cornerPoints;
                     String qrResultat = barcode.displayValue;
                     System.out.println("QR Code        " + barcode.displayValue);
-                    DataHolder.getInstance().setRecipe(new QRCode().interpretQr(qrResultat));
-                    new VariousMethods().goToNewActivity(RecipeActivity.class, getApplicationContext());
+                    Recipe returnRecipe = new QRCode().interpretQr(qrResultat);
+                    if (returnRecipe != null) {
+                        DataHolder.getInstance().setRecipe(returnRecipe);
+                        new VariousMethods().goToNewActivity(RecipeActivity.class, AddRecipeMethodsActivity.this);
+                    }else{
+                        new Toaster(getWindow().getDecorView().findViewById(android.R.id.content),"Kein Rezept gefunden",-2);
+                    }
+
 
                 } else {
 //                    mResultTextView.setText(R.string.no_barcode_captured);
@@ -91,7 +99,6 @@ public class AddRecipeMethodsActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
-
 
 
 }

@@ -120,7 +120,7 @@ public class DatabaseConector {
         if (userFromFirebase != null && userFromRoomDB != null) {
             for (int i = 0; i < userFromFirebase.size(); i++) {
                 if(userFromFirebase.get(i).getUserLongId().contains("admin")){
-                    userFromFirebase.get(i).setUserEmail("nahanahahnahahnah"+userFromFirebase.get(i).getUserLongId());
+                    userFromFirebase.get(i).setUserEmail(""+userFromFirebase.get(i).getUserLongId());
                     userFromFirebase.get(i).setUserName(userFromFirebase.get(i).getUserLongId());
                 }
                 boolean isInRoomDb = false;
